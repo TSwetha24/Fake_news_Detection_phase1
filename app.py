@@ -1,7 +1,8 @@
-import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
+import io
 import config
 from pipeline import ClaimVerificationPipeline
+from src.module4_agentic_verification.pdf_generator import generate_pdf_report_bytes
 
 app = Flask(__name__)
 
@@ -28,6 +29,35 @@ def verify_claim():
         print(f"Error processing claim: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route("/api/download_report", methods=["POST"])
+def download_report():
+    data = request.get_json() or {}
+    claim_text = data.get("claim", "").strip()
+    
+    if not claim_text:
+        return jsonify({"error": "Please provide a valid claim to generate a report."}), 400
+        
+    try:
+        verification_data = data.get("verification_data")
+        if not verification_data:
+            verification_data = pipeline.process_claim(claim_text, target_evidence_count=15)
+            
+        pdf_buffer = generate_pdf_report_bytes(verification_data)
+        
+        # Clean safe filename
+        safe_claim_snippet = "".join([c if c.isalnum() else "_" for c in claim_text[:30]]).strip("_")
+        filename = f"TruthChain_Report_{safe_claim_snippet}.pdf"
+        
+        return send_file(
+            pdf_buffer,
+            mimetype="application/pdf",
+            as_attachment=True,
+            download_name=filename
+        )
+    except Exception as e:
+        print(f"Error generating PDF report: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/api/samples", methods=["GET"])
 def get_sample_claims():
     samples = [
@@ -41,3 +71,4 @@ def get_sample_claims():
 
 if __name__ == "__main__":
     app.run(host=config.SERVER_HOST, port=config.SERVER_PORT, debug=config.DEBUG)
+

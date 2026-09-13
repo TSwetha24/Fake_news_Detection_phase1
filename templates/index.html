@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Fake News AI | Automated Claim Verification Platform</title>
-    <!-- Google Fonts: Playfair Display for Editorial Headlines & Inter for Body -->
+    <title>The Fake News AI Platform — Multi-Module Fact Verification Network</title>
+    
+    <!-- Google Fonts: Editorial Serif + Clean Modern Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheet -->
+    
+    <!-- MathJax for rendering LaTeX mathematical formulations -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Luxury Editorial Styling -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Top Announcement Bar (Matching The Sill) -->
-    <div class="top-announcement-bar">
-        <span>Fakeddit Benchmark Dataset &bull; 100% Free Live News Verification &bull; Multi-Source AI Synthesis</span>
+
+    <!-- Top Announcement Ticker -->
+    <div class="top-banner">
+        <span><i class="fa-solid fa-sparkles text-emerald"></i> Autonomous 6-Module Fact Verification Network &bull; Live News Evidence, Agentic Reasoning & Trust Score Fusion</span>
     </div>
 
-    <!-- Main Navigation Header (Matching The Sill) -->
+    <!-- Main Navigation Header -->
     <header class="navbar">
         <div class="container nav-main-row">
             <!-- Brand Logo -->
@@ -32,10 +39,10 @@
 
             <!-- Utility Right Menu -->
             <div class="header-utility-menu">
-                <span class="utility-item"><i class="fa-solid fa-location-dot"></i> Live Engine: <strong>Active</strong></span>
-                <span class="utility-item"><i class="fa-solid fa-magnifying-glass"></i> Quick Search</span>
-                <span class="utility-item"><i class="fa-solid fa-database"></i> Fakeddit TSV</span>
-                <span class="utility-item cart-item"><i class="fa-solid fa-shield-halved"></i> Verification (3)</span>
+                <span class="utility-item"><i class="fa-solid fa-circle-check text-emerald"></i> Engine: <strong>6 Modules Active</strong></span>
+                <span class="utility-item"><i class="fa-solid fa-robot"></i> Agentic AI</span>
+                <span class="utility-item"><i class="fa-solid fa-database"></i> Fakeddit Benchmark</span>
+                <span class="utility-item cart-item"><i class="fa-solid fa-shield-halved"></i> Verification Hub</span>
             </div>
         </div>
 
@@ -43,23 +50,25 @@
         <div class="container nav-categories-row">
             <nav class="category-nav-links">
                 <button id="nav-btn-dashboard" class="cat-link active" onclick="switchPage('dashboard')">Overview</button>
-                <button id="nav-btn-mod1" class="cat-link" onclick="switchPage('mod1')">Content Classifier (C1)</button>
-                <button id="nav-btn-mod2" class="cat-link" onclick="switchPage('mod2')">Live Evidence (C2)</button>
-                <button id="nav-btn-mod3" class="cat-link" onclick="switchPage('mod3')">Source Independence (C3)</button>
-                <button id="nav-btn-summary" class="cat-link" onclick="switchPage('summary')">Verification Summary</button>
+                <button id="nav-btn-mod1" class="cat-link" onclick="switchPage('mod1')">Mod 1: Content (C1)</button>
+                <button id="nav-btn-mod2" class="cat-link" onclick="switchPage('mod2')">Mod 2: Evidence (C2)</button>
+                <button id="nav-btn-mod3" class="cat-link" onclick="switchPage('mod3')">Mod 3: Independence (C3)</button>
+                <button id="nav-btn-mod4" class="cat-link" onclick="switchPage('mod4')">Mod 4: Agentic (C4)</button>
+                <button id="nav-btn-mod5" class="cat-link" onclick="switchPage('mod5')">Mod 5: Credibility (C5)</button>
+                <button id="nav-btn-mod6" class="cat-link" onclick="switchPage('mod6')">Mod 6: Fusion & Trust</button>
+                <button id="nav-btn-summary" class="cat-link" onclick="switchPage('summary')">Audit Report</button>
             </nav>
         </div>
     </header>
 
     <main class="container main-content">
 
-        <!-- Split Hero Section (1-to-1 Match with The Sill Reference Layout) -->
+        <!-- Split Hero Section -->
         <section class="sill-hero-grid">
-            <!-- Left Editorial Hero Box (Soft Mint Background) -->
             <div class="hero-left-box">
                 <h1 class="hero-editorial-title">Fact Checking Is For Media Integrity.</h1>
                 <p class="hero-editorial-subtitle">
-                    Automated multi-module claim verification combining <strong>RoBERTa Content Classification</strong>, <strong>15+ Live News Evidence Archives</strong>, and <strong>Sentence-BERT Source Clustering</strong>.
+                    Automated multi-module claim verification combining <strong>RoBERTa Classification</strong>, <strong>Live Evidence Retrieval</strong>, <strong>Story Clustering</strong>, <strong>Autonomous Agent Reasoning</strong>, <strong>Domain Credibility</strong>, and <strong>Calibrated Score Fusion</strong>.
                 </p>
                 <div class="hero-actions-row">
                     <button class="sill-btn sill-btn-emerald" onclick="scrollToInput()">
@@ -71,19 +80,18 @@
                 </div>
             </div>
 
-            <!-- Right Featured Visual Image Box -->
             <div class="hero-right-box">
                 <img src="{{ url_for('static', filename='images/hero.jpg') }}" alt="AI News Verification Network" class="hero-featured-img">
             </div>
         </section>
 
-        <!-- Input Card Section (Editorial Light Theme) -->
+        <!-- Input Card Section -->
         <section id="claim-input-section" class="input-card sill-card">
             <div class="input-header">
                 <label for="claim-input" class="input-label">
                     <i class="fa-solid fa-pen-nib text-emerald"></i> Enter News Article Headline or Claim
                 </label>
-                <span class="input-hint">Type any claim or click a pre-loaded Fakeddit benchmark sample below</span>
+                <span class="input-hint">Type any claim or click a pre-loaded benchmark sample below</span>
             </div>
             
             <div class="textarea-wrapper">
@@ -95,16 +103,16 @@
                 <span class="chips-label"><i class="fa-solid fa-sparkles text-emerald"></i> Benchmark Claims:</span>
                 <div id="sample-chips" class="chips-container">
                     <button class="chip" onclick="loadSample(this)">Joseph Vijay is the CM of TamilNadu</button>
+                    <button class="chip" onclick="loadSample(this)">M K Stalin is the CM of TamilNadu</button>
                     <button class="chip" onclick="loadSample(this)">Suriya is the CM of TamilNadu</button>
+                    <button class="chip" onclick="loadSample(this)">NASA says drinking lemon water would cause lung infection</button>
                     <button class="chip" onclick="loadSample(this)">Tomorrow for coimbatore district due to heavy rains schools and colleges are leave on 14/8/2026</button>
-                    <button class="chip" onclick="loadSample(this)">NASA James Webb Telescope exoplanet discovery</button>
-                    <button class="chip" onclick="loadSample(this)">Global renewable energy capacity grew by 50% in 2023</button>
                 </div>
             </div>
 
             <div class="action-bar">
                 <button id="verify-btn" class="sill-btn sill-btn-emerald" onclick="runVerification()">
-                    <i class="fa-solid fa-shield-check"></i> Verify Claim (Synthesize Modules 1-3)
+                    <i class="fa-solid fa-shield-check"></i> Verify Claim (Synthesize Modules 1-6)
                 </button>
             </div>
         </section>
@@ -114,8 +122,11 @@
             <div class="spinner"></div>
             <div class="loader-steps">
                 <div class="step-item" id="step-1"><i class="fa-solid fa-spinner fa-spin"></i> Module 1: RoBERTa Content Style Classifier (C1)...</div>
-                <div class="step-item" id="step-2"><i class="fa-solid fa-spinner fa-spin"></i> Module 2: Retrieving 15+ live evidence articles from Google News, Wikipedia, DuckDuckGo, GDELT & NewsAPI (C2)...</div>
-                <div class="step-item" id="step-3"><i class="fa-solid fa-spinner fa-spin"></i> Module 3: Sentence-BERT Cosine Similarity & Source Clustering (C3)...</div>
+                <div class="step-item" id="step-2"><i class="fa-solid fa-spinner fa-spin"></i> Module 2: Live Multi-Source Evidence Retrieval (C2)...</div>
+                <div class="step-item" id="step-3"><i class="fa-solid fa-spinner fa-spin"></i> Module 3: Sentence-BERT Story Clustering & Independence (C3)...</div>
+                <div class="step-item" id="step-4"><i class="fa-solid fa-spinner fa-spin"></i> Module 4: Autonomous Agentic Verification Reasoning (C4)...</div>
+                <div class="step-item" id="step-5"><i class="fa-solid fa-spinner fa-spin"></i> Module 5: Source Credibility & Factuality Tier Assessment (C5)...</div>
+                <div class="step-item" id="step-6"><i class="fa-solid fa-spinner fa-spin"></i> Module 6: Trust Score Fusion & Logistic Calibration...</div>
             </div>
         </section>
 
@@ -137,85 +148,160 @@
                             <span id="final-verdict-badge" class="verdict-badge badge-unverified">UNVERIFIED</span>
                             <span id="trust-score-badge" class="trust-pill"><i class="fa-solid fa-shield"></i> Trust Score: 0%</span>
                             <span id="execution-time-badge" class="time-pill"><i class="fa-solid fa-clock"></i> 0.0s</span>
+                            <button id="download-report-btn-banner" class="sill-btn sill-btn-emerald" style="padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer;" onclick="downloadVerificationReport()">
+                                <i class="fa-solid fa-file-arrow-down"></i> Download Report (PDF)
+                            </button>
                         </div>
                     </div>
 
-                    <!-- 3 Modules Fusion Score Formula Bar -->
-                    <div class="fusion-formula-bar">
-                        <span class="fusion-label"><i class="fa-solid fa-calculator text-emerald"></i> 3-Module Score Fusion Formula:</span>
-                        <div class="fusion-scores">
-                            <span class="score-chip"><i class="fa-solid fa-font"></i> Mod 1 (C1): <strong id="score-c1">0%</strong></span>
-                            <span class="score-plus">+</span>
-                            <span class="score-chip"><i class="fa-solid fa-newspaper"></i> Mod 2 (C2): <strong id="score-c2">0%</strong></span>
-                            <span class="score-plus">+</span>
-                            <span class="score-chip"><i class="fa-solid fa-diagram-project"></i> Mod 3 (C3): <strong id="score-c3">0%</strong></span>
-                            <span class="score-equals">=</span>
-                            <span class="score-chip highlight-chip"><i class="fa-solid fa-shield-halved"></i> Trust Score: <strong id="score-final">0%</strong></span>
+                    <!-- 5-Module Score Equation Bar -->
+                    <div class="equation-strip">
+                        <div class="eq-head"><i class="fa-solid fa-calculator text-emerald"></i> 5-Module Score Fusion Formula:</div>
+                        <div class="eq-items">
+                            <span class="eq-box">Mod 1 (C1): <strong id="eq-c1">0%</strong></span>
+                            <span class="eq-op">+</span>
+                            <span class="eq-box">Mod 2 (C2): <strong id="eq-c2">0%</strong></span>
+                            <span class="eq-op">+</span>
+                            <span class="eq-box">Mod 3 (C3): <strong id="eq-c3">0%</strong></span>
+                            <span class="eq-op">+</span>
+                            <span class="eq-box">Mod 4 (C4): <strong id="eq-c4">0%</strong></span>
+                            <span class="eq-op">+</span>
+                            <span class="eq-box">Mod 5 (C5): <strong id="eq-c5">0%</strong></span>
+                            <span class="eq-op">=</span>
+                            <span class="eq-box eq-result">Trust Score: <strong id="eq-trust">0%</strong></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Executive 3-Module Cards Grid -->
-                <div class="overview-grid">
+                <!-- 6-Module Summary Cards Grid (Clean 3x2 Matrix) -->
+                <div class="modules-grid-three">
                     
-                    <!-- MODULE 1 SUMMARY CARD -->
+                    <!-- Card 1: Content Classifier (C1) -->
                     <div class="module-card sill-card">
-                        <div class="card-header">
-                            <div>
-                                <span class="mod-num">MODULE 1</span>
-                                <h3><i class="fa-solid fa-robot text-emerald"></i> Content Classifier</h3>
-                            </div>
-                            <span class="mod-tech">RoBERTa Softmax</span>
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 1</span>
+                            <i class="fa-solid fa-newspaper text-emerald"></i>
                         </div>
-                        <div class="prediction-box">
-                            <span class="pred-label">Linguistic Style Score (C1)</span>
-                            <div id="dash-mod1-badge" class="verdict-badge badge-unverified" style="margin: 8px 0;">UNVERIFIED</div>
-                            <div class="conf-info">
-                                <span>Style Confidence</span>
-                                <strong id="dash-mod1-conf">0%</strong>
+                        <h3 class="card-heading">Content Classifier</h3>
+                        <p class="card-subhead">RoBERTa Softmax</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Linguistic Style Score (C1)</span>
+                            <div class="metric-big-row">
+                                <span id="dash-c1-pred" class="pred-text text-emerald">REAL</span>
+                                <span id="dash-c1-score" class="metric-pill">0%</span>
                             </div>
                         </div>
-                        <button class="nav-action-btn" onclick="switchPage('mod1')">
-                            Inspect RoBERTa Details &rarr;
-                        </button>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod1')">Inspect RoBERTa Details &rarr;</button>
+                        </div>
                     </div>
 
-                    <!-- MODULE 2 SUMMARY CARD -->
+                    <!-- Card 2: Live News Evidence (C2) -->
                     <div class="module-card sill-card">
-                        <div class="card-header">
-                            <div>
-                                <span class="mod-num">MODULE 2</span>
-                                <h3><i class="fa-solid fa-newspaper text-emerald"></i> Live News Evidence</h3>
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 2</span>
+                            <i class="fa-solid fa-magnifying-glass-location text-emerald"></i>
+                        </div>
+                        <h3 class="card-heading">Live News Evidence</h3>
+                        <p class="card-subhead" id="dash-evidence-count">15+ Articles</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Evidence Verification Score (C2)</span>
+                            <div class="metric-big-row">
+                                <span id="dash-c2-score" class="metric-hero-val text-emerald">0%</span>
                             </div>
-                            <span id="dash-retrieval-count" class="mod-tech bg-badge">15+ Articles</span>
+                            <div id="dash-c2-status" class="sub-status-text">Searching Google News, Wikipedia, DDG...</div>
                         </div>
-                        <div class="prediction-box">
-                            <span class="pred-label">Evidence Verification Score (C2)</span>
-                            <div id="dash-mod2-score" class="metric-val text-emerald" style="font-size: 1.8rem; margin: 8px 0;">0%</div>
-                            <span id="dash-mod2-status" class="metric-sub">Evaluating live news coverage...</span>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod2')">Inspect Evidence Feed &rarr;</button>
                         </div>
-                        <button class="nav-action-btn" onclick="switchPage('mod2')">
-                            Inspect 15+ Articles Feed &rarr;
-                        </button>
                     </div>
 
-                    <!-- MODULE 3 SUMMARY CARD -->
+                    <!-- Card 3: Source Independence (C3) -->
                     <div class="module-card sill-card">
-                        <div class="card-header">
-                            <div>
-                                <span class="mod-num">MODULE 3</span>
-                                <h3><i class="fa-solid fa-diagram-project text-emerald"></i> Source Independence</h3>
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 3</span>
+                            <i class="fa-solid fa-diagram-project text-emerald"></i>
+                        </div>
+                        <h3 class="card-heading">Source Independence</h3>
+                        <p class="card-subhead">Sentence-BERT</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Source Independence Score (C3)</span>
+                            <div class="metric-big-row">
+                                <span id="dash-c3-score" class="metric-hero-val text-emerald">0.00</span>
                             </div>
-                            <span class="mod-tech">Sentence-BERT</span>
+                            <div class="sub-status-text" id="dash-c3-status">Independent origin stories ratio (K / N)</div>
                         </div>
-                        <div class="prediction-box">
-                            <span class="pred-label">Source Independence Score (C3)</span>
-                            <div id="dash-mod3-score" class="metric-val text-emerald" style="font-size: 1.8rem; margin: 8px 0;">0.0</div>
-                            <span class="metric-sub">Independent origin stories ratio (K / N)</span>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod3')">Explore Source Clustering &rarr;</button>
                         </div>
-                        <button class="nav-action-btn" onclick="switchPage('mod3')">
-                            Explore Source Clustering &rarr;
-                        </button>
+                    </div>
+
+                    <!-- Card 4: Agentic Verification (C4) -->
+                    <div class="module-card sill-card">
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 4</span>
+                            <i class="fa-solid fa-robot text-emerald"></i>
+                        </div>
+                        <h3 class="card-heading">Agentic Verification</h3>
+                        <p class="card-subhead">LangGraph / CrewAI Agent</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Agent Confidence Score (C4)</span>
+                            <div class="metric-big-row">
+                                <span id="dash-c4-verdict" class="pred-text text-emerald">REAL</span>
+                                <span id="dash-c4-score" class="metric-pill">0%</span>
+                            </div>
+                            <div id="dash-c4-status" class="sub-status-text">Autonomous tool execution & reasoning</div>
+                        </div>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod4')">View Reasoning Trace &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Source Credibility (C5) -->
+                    <div class="module-card sill-card">
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 5</span>
+                            <i class="fa-solid fa-shield-halved text-emerald"></i>
+                        </div>
+                        <h3 class="card-heading">Source Credibility</h3>
+                        <p class="card-subhead">Domain Reputation DB</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Credibility Trust Index (C5)</span>
+                            <div class="metric-big-row">
+                                <span id="dash-c5-score" class="metric-hero-val text-emerald">0.00</span>
+                            </div>
+                            <div id="dash-c5-status" class="sub-status-text">NewsGuard / MBFC Tier Assessment</div>
+                        </div>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod5')">Inspect Credibility Tiers &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Trust Score Fusion -->
+                    <div class="module-card sill-card">
+                        <div class="card-top-row">
+                            <span class="module-tag">MODULE 6</span>
+                            <i class="fa-solid fa-scale-balanced text-emerald"></i>
+                        </div>
+                        <h3 class="card-heading">Trust Score Fusion</h3>
+                        <p class="card-subhead">Logistic Calibration</p>
+                        
+                        <div class="card-metric-block">
+                            <span class="metric-label">Definitive Trust Score</span>
+                            <div class="metric-big-row">
+                                <span id="dash-fusion-verdict" class="pred-text text-emerald">REAL</span>
+                                <span id="dash-fusion-score" class="metric-hero-val text-emerald">0%</span>
+                            </div>
+                            <div id="dash-fusion-status" class="sub-status-text">Multi-Module Logistic Calibration</div>
+                        </div>
+                        <div class="card-footer-action">
+                            <button class="text-link-btn" onclick="switchPage('mod6')">View Mathematical Fusion &rarr;</button>
+                        </div>
                     </div>
 
                 </div>
@@ -223,98 +309,91 @@
         </div>
 
         <!-- ================================================================= -->
-        <!-- PAGE 2: MODULE 1 DEDICATED FULL PAGE VIEW -->
+        <!-- PAGE 2: MODULE 1 DEDICATED VIEW -->
         <!-- ================================================================= -->
         <div id="page-mod1" class="page-view hidden">
             <div class="dedicated-page-header sill-card">
                 <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
-                <h2>Module 1: RoBERTa Textual Content Classifier</h2>
-                <p>Evaluates textual syntax, sensationalism, structural style, and phrasing features using fine-tuned RoBERTa transformer embeddings and Softmax classification probabilities.</p>
+                <h2>Module 1: RoBERTa Content Style Classification</h2>
+                <p>Analyzes semantic structure, linguistic tone, and sensationalism using fine-tuned RoBERTa with Softmax probability distribution.</p>
             </div>
 
-            <div class="mod1-full-grid">
-                <div class="module-card sill-card">
-                    <div class="prediction-box">
-                        <span class="pred-label">Content Classification Result</span>
-                        <div id="full-mod1-badge" class="verdict-badge badge-unverified">UNVERIFIED</div>
-                        <div class="confidence-wrapper">
-                            <div class="conf-info">
-                                <span>RoBERTa Softmax Confidence (C1)</span>
-                                <strong id="full-mod1-conf">0%</strong>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div id="full-mod1-bar" class="progress-bar-fill" style="width: 0%;"></div>
-                            </div>
-                        </div>
+            <div class="module-card sill-card">
+                <div class="mod1-metrics-row">
+                    <div class="metric-card">
+                        <span class="metric-label">Classification Output</span>
+                        <h3 id="full-mod1-label" class="pred-highlight text-emerald">REAL</h3>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Style Confidence (C1)</span>
+                        <h3 id="full-mod1-conf" class="metric-val text-emerald">0%</h3>
                     </div>
                 </div>
 
-                <div class="module-card sill-card">
-                    <h3>Softmax Probability Distribution</h3>
-                    <div class="probabilities-section" style="margin-top: 16px;">
-                        <div class="prob-row">
-                            <div class="prob-meta"><span><i class="fa-solid fa-circle-check text-real"></i> Real Probability</span><strong id="full-prob-real">0%</strong></div>
-                            <div class="progress-bar-bg"><div id="full-bar-real" class="progress-bar-fill bg-real" style="width: 0%;"></div></div>
-                        </div>
-                        <div class="prob-row">
-                            <div class="prob-meta"><span><i class="fa-solid fa-circle-xmark text-fake"></i> Fake Probability</span><strong id="full-prob-fake">0%</strong></div>
-                            <div class="progress-bar-bg"><div id="full-bar-fake" class="progress-bar-fill bg-fake" style="width: 0%;"></div></div>
-                        </div>
-                        <div class="prob-row">
-                            <div class="prob-meta"><span><i class="fa-solid fa-circle-exclamation text-unverified"></i> Unverified Probability</span><strong id="full-prob-unverified">0%</strong></div>
-                            <div class="progress-bar-bg"><div id="full-bar-unverified" class="progress-bar-fill bg-unverified" style="width: 0%;"></div></div>
-                        </div>
+                <div class="probability-bars-section">
+                    <h4>Softmax Class Probabilities</h4>
+                    <div class="prob-row">
+                        <div class="prob-meta"><span>Real</span><span id="prob-real-val">0%</span></div>
+                        <div class="prob-track"><div id="prob-real-bar" class="prob-fill bar-real" style="width:0%"></div></div>
+                    </div>
+                    <div class="prob-row">
+                        <div class="prob-meta"><span>Fake</span><span id="prob-fake-val">0%</span></div>
+                        <div class="prob-track"><div id="prob-fake-bar" class="prob-fill bar-fake" style="width:0%"></div></div>
+                    </div>
+                    <div class="prob-row">
+                        <div class="prob-meta"><span>Unverified</span><span id="prob-unverified-val">0%</span></div>
+                        <div class="prob-track"><div id="prob-unverified-bar" class="prob-fill bar-unverified" style="width:0%"></div></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ================================================================= -->
-        <!-- PAGE 3: MODULE 2 DEDICATED FULL PAGE VIEW -->
+        <!-- PAGE 3: MODULE 2 DEDICATED VIEW -->
         <!-- ================================================================= -->
         <div id="page-mod2" class="page-view hidden">
             <div class="dedicated-page-header sill-card">
                 <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
-                <h2>Module 2: Live Multi-Source Evidence Retrieval (15+ Articles)</h2>
-                <p>Queries Google News RSS, Wikipedia, DuckDuckGo, GDELT API v2, NewsAPI, and Sentence-BERT vector space to gather live online evidence with strict date verification and subject-predicate entity role matching.</p>
+                <h2>Module 2: Live Evidence Retrieval & Stance Verification</h2>
+                <p>Retrieves real-time evidence across Google News RSS, Wikipedia Knowledge Base, DuckDuckGo, GDELT v2, and NewsAPI with entity role and date verification.</p>
             </div>
 
-            <div class="mod2-full-panel sill-card">
-                <div class="mod2-summary-bar">
+            <div class="module-card sill-card">
+                <div class="evidence-stats-row">
                     <div>
-                        <span class="pred-label">Evidence Verification Score (C2)</span>
-                        <div id="full-mod2-score" class="metric-val text-emerald" style="font-size: 2.2rem;">0%</div>
+                        <span class="metric-label">Evidence Verification Score (C2)</span>
+                        <h3 id="full-c2-score" class="metric-val text-emerald">0%</h3>
                     </div>
-                    <div>
-                        <span class="pred-label">Verification Status</span>
-                        <div id="full-mod2-status" class="status-callout">Evaluating evidence...</div>
-                    </div>
+                    <div id="full-evidence-status-badge" class="evidence-badge">Status</div>
                 </div>
 
-                <div class="backends-tags" id="full-backends-list" style="margin: 20px 0;"></div>
+                <div class="backends-tags-box">
+                    <span class="tags-label">Multi-Source Retrieval Backends:</span>
+                    <div id="full-backends-list" class="backends-flex"></div>
+                </div>
 
-                <div class="articles-header-bar">
+                <div class="articles-feed-section">
                     <h3>Retrieved Evidence Articles (<span id="full-articles-count">0</span>)</h3>
+                    <div id="full-articles-list" class="articles-feed-grid"></div>
                 </div>
-                <div id="full-articles-list" class="articles-grid-full"></div>
             </div>
         </div>
 
         <!-- ================================================================= -->
-        <!-- PAGE 4: MODULE 3 DEDICATED FULL BUBBLE CLUSTER PAGE VIEW -->
+        <!-- PAGE 4: MODULE 3 DEDICATED VIEW -->
         <!-- ================================================================= -->
         <div id="page-mod3" class="page-view hidden">
             <div class="dedicated-page-header sill-card">
                 <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
-                <h2>Module 3: Source Independence & Force-Directed Bubble Cluster Diagram</h2>
-                <p>Identifies syndicated copycat news coverage vs. independent news origins. Sentence-BERT vector embeddings compute Pairwise Cosine Similarity (\(S_{ij}\)) to cluster articles into visual story hubs.</p>
+                <h2>Module 3: Source Independence & Story Clustering</h2>
+                <p>Identifies duplicate or syndicated articles vs. independent origins. Evaluates Pairwise Cosine Similarity (\(S_{ij}\)) to cluster articles into visual story hubs.</p>
             </div>
 
             <div class="mod3-top-metrics-row">
                 <div class="metric-card sill-card">
                     <span class="metric-label">Source Independence Score (C3)</span>
                     <strong id="full-mod3-score" class="metric-val text-emerald">0.0000</strong>
-                    <span class="metric-sub">Ratio of Unique Independent Origin Stories (K / N)</span>
+                    <span class="metric-sub">Ratio of Unique Origin Stories (K / N)</span>
                 </div>
                 <div class="metric-card sill-card">
                     <span class="metric-label">Independent Clusters (K)</span>
@@ -336,16 +415,16 @@
                         <span>Force-Directed Story Cluster Bubble Diagram</span>
                     </div>
                     <div class="threshold-slider-box">
-                        <label for="similarity-slider"><i class="fa-solid fa-sliders"></i> Similarity Threshold (\(\tau\)): <strong id="slider-val-display">0.75</strong></label>
-                        <input type="range" id="similarity-slider" min="0.50" max="0.95" step="0.05" value="0.75" oninput="updateSimilarityThreshold(this.value)">
+                        <label for="similarity-slider"><i class="fa-solid fa-sliders"></i> Similarity Threshold (\(\tau\)): <strong id="slider-val-display">0.50</strong></label>
+                        <input type="range" id="similarity-slider" min="0.50" max="0.95" step="0.05" value="0.50" oninput="updateSimilarityThreshold(this.value)">
                     </div>
                 </div>
 
                 <div class="bubble-canvas-container">
                     <div class="graph-legend-overlay">
-                        <span class="legend-item"><span class="legend-dot dot-isolated"></span> Independent Origin Container</span>
-                        <span class="legend-item"><span class="legend-dot dot-cluster"></span> Syndicated Story Cluster Bubble</span>
-                        <span class="legend-item"><span class="legend-line"></span> Cosine Similarity \(\ge 0.75\)</span>
+                        <span class="legend-item"><span class="legend-dot dot-isolated"></span> Independent Origin</span>
+                        <span class="legend-item"><span class="legend-dot dot-cluster"></span> Syndicated Cluster</span>
+                        <span class="legend-item"><span class="legend-line"></span> Cosine Similarity \(\ge 0.50\)</span>
                     </div>
                     <canvas id="bubble-cluster-canvas" width="1100" height="520"></canvas>
                     <div id="bubble-tooltip" class="graph-tooltip hidden"></div>
@@ -360,47 +439,189 @@
         </div>
 
         <!-- ================================================================= -->
-        <!-- PAGE 5: VERIFICATION REPORT PAGE VIEW -->
+        <!-- PAGE 5: MODULE 4 AGENTIC VERIFICATION DEDICATED VIEW -->
+        <!-- ================================================================= -->
+        <div id="page-mod4" class="page-view hidden">
+            <div class="dedicated-page-header sill-card">
+                <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
+                <h2>Module 4: Autonomous Agentic Verification (LangGraph StateGraph)</h2>
+                <p>Autonomous AI verification agent that plans tool execution, performs knowledge lookups, audits cross-domain authority, and produces an explainable report.</p>
+            </div>
+
+            <div class="mod3-top-metrics-row">
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Agentic Verdict</span>
+                    <strong id="full-mod4-verdict" class="metric-val text-emerald">REAL</strong>
+                    <span class="metric-sub">Autonomous Decision</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Agent Confidence (C4)</span>
+                    <strong id="full-mod4-score" class="metric-val text-emerald">0%</strong>
+                    <span class="metric-sub">Entailment & Deliberation Confidence</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Tools Executed</span>
+                    <strong id="full-mod4-tools-count" class="metric-val text-emerald">4 Tools</strong>
+                    <span class="metric-sub">Dynamic Tool Registry Selection</span>
+                </div>
+            </div>
+
+            <!-- Tools Invoked Badges -->
+            <div class="sill-card" style="margin-bottom: 20px;">
+                <h4 style="margin-bottom: 10px;"><i class="fa-solid fa-toolbox text-emerald"></i> Dynamic Tools Invoked by Autonomous Agent:</h4>
+                <div id="full-mod4-tools-list" class="backends-flex"></div>
+            </div>
+
+            <!-- Agent Reasoning Trace Box -->
+            <div class="sill-card" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-brain text-emerald"></i> Step-by-Step Autonomous Reasoning Trace</h3>
+                <div id="full-mod4-reasoning-trace" class="reasoning-trace-container"></div>
+            </div>
+
+            <!-- Explainable Brief Markdown Box -->
+            <div class="sill-card">
+                <h3><i class="fa-solid fa-file-lines text-emerald"></i> Explainable Fact-Checking Brief</h3>
+                <div id="full-mod4-report-content" class="report-markdown-view"></div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- PAGE 6: MODULE 5 SOURCE CREDIBILITY DEDICATED VIEW -->
+        <!-- ================================================================= -->
+        <div id="page-mod5" class="page-view hidden">
+            <div class="dedicated-page-header sill-card">
+                <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
+                <h2>Module 5: Source Credibility & Domain Reputation Assessment</h2>
+                <p>Evaluates every retrieved evidence source against an authoritative domain reputation database aligned with NewsGuard and Media Bias/Fact Check (MBFC) standards.</p>
+            </div>
+
+            <div class="mod3-top-metrics-row">
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Composite Credibility Index (C5)</span>
+                    <strong id="full-mod5-score" class="metric-val text-emerald">0.00</strong>
+                    <span class="metric-sub">Weighted Domain Trust Index</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Tier 1 Authoritative Sources</span>
+                    <strong id="full-tier1-pct" class="metric-val text-emerald">0%</strong>
+                    <span class="metric-sub">Wire Agencies & Official Portals</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Tier 2 Mainstream Sources</span>
+                    <strong id="full-tier2-pct" class="metric-val text-emerald">0%</strong>
+                    <span class="metric-sub">Established National Dailies</span>
+                </div>
+            </div>
+
+            <!-- Sources Breakdown Grid -->
+            <div class="sill-card">
+                <h3><i class="fa-solid fa-shield-halved text-emerald"></i> Evaluated Source Publisher Profiles</h3>
+                <div id="full-sources-credibility-grid" class="credibility-cards-grid"></div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- PAGE 7: MODULE 6 TRUST SCORE FUSION DEDICATED VIEW -->
+        <!-- ================================================================= -->
+        <div id="page-mod6" class="page-view hidden">
+            <div class="dedicated-page-header sill-card">
+                <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
+                <h2>Module 6: Multi-Module Trust Score Fusion Engine</h2>
+                <p>Synthesizes confidence scores across all analytical modules using Multi-Dimensional Weighted Fusion and Logistic Regression calibration with contradiction safety gates.</p>
+            </div>
+
+            <div class="mod3-top-metrics-row">
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Definitive Trust Score</span>
+                    <strong id="full-mod6-score" class="metric-val text-emerald">0%</strong>
+                    <span class="metric-sub">Calibrated Multi-Module Fusion</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Final Verified Verdict</span>
+                    <strong id="full-mod6-verdict" class="metric-val text-emerald">REAL</strong>
+                    <span class="metric-sub">Decision Gate Output</span>
+                </div>
+                <div class="metric-card sill-card">
+                    <span class="metric-label">Logistic Logit (\(z\))</span>
+                    <strong id="full-mod6-logit" class="metric-val text-emerald">0.00</strong>
+                    <span class="metric-sub">Sigmoid Calibration Parameter</span>
+                </div>
+            </div>
+
+            <!-- Fusion Formula Explanation Box -->
+            <div class="sill-card" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-calculator text-emerald"></i> Multi-Module Mathematical Score Fusion Derivation</h3>
+                <div class="formula-code highlight-formula" style="font-size: 1.05rem; padding: 14px; margin: 12px 0;">
+                    $$\text{Trust Score} = (0.15 \cdot C_1) + (0.30 \cdot C_2) + (0.15 \cdot C_3) + (0.25 \cdot C_4) + (0.15 \cdot C_5)$$
+                </div>
+
+                <div id="fusion-terms-table" class="terms-table-container"></div>
+            </div>
+
+            <!-- Decision Rationale Box -->
+            <div class="sill-card">
+                <h3><i class="fa-solid fa-gavel text-emerald"></i> Final Decision Rationale & Safety Gate</h3>
+                <div id="fusion-decision-rationale" class="sub-status-text" style="font-size: 1rem; color: #1a1a1a; padding: 10px 0;"></div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- PAGE 8: VERIFICATION AUDIT REPORT PAGE VIEW -->
         <!-- ================================================================= -->
         <div id="page-summary" class="page-view hidden">
             <div class="dedicated-page-header sill-card">
                 <button class="back-btn" onclick="switchPage('dashboard')">&larr; Back to Overview</button>
-                <h2>Verification Synthesis & Audit Report</h2>
+                <h2>Comprehensive Verification Audit Report</h2>
                 <p>Complete multi-module synthesis report explaining the final verdict and mathematical trust score derivation.</p>
             </div>
 
             <div id="summary-report-card" class="module-card sill-card">
-                <div class="report-header-box">
+                <div class="report-header-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div>
                         <span class="pred-label">Claim Under Verification</span>
                         <h3 id="report-claim" style="font-size: 1.4rem; color: #1a1a1a; margin-top: 4px;">"..."</h3>
                     </div>
-                    <div id="report-verdict-badge" class="verdict-badge badge-unverified">UNVERIFIED</div>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <div id="report-verdict-badge" class="verdict-badge badge-unverified">UNVERIFIED</div>
+                        <button id="download-report-btn-summary" class="sill-btn sill-btn-emerald" style="padding: 8px 16px; border-radius: 20px; cursor: pointer;" onclick="downloadVerificationReport()">
+                            <i class="fa-solid fa-file-pdf"></i> Download PDF Report
+                        </button>
+                    </div>
                 </div>
 
                 <div class="report-section">
-                    <h4><i class="fa-solid fa-calculator text-emerald"></i> Score Fusion Breakdown</h4>
-                    <p>The overall <strong>Trust Score</strong> is derived via multi-module weighted score fusion:</p>
-                    <div class="formula-code highlight-formula" style="font-size: 1.1rem; padding: 14px; margin: 12px 0;">
-                        \(\text{Trust Score} = (0.35 \times C_1) + (0.45 \times C_2) + (0.20 \times C_3) = \mathbf{<span id="report-trust-val">0%</span>}\)
+                    <h4><i class="fa-solid fa-calculator text-emerald"></i> 5-Module Score Fusion Breakdown</h4>
+                    <p>The overall <strong>Trust Score</strong> is synthesized across all 5 verification dimensions:</p>
+                    <div class="formula-code highlight-formula" style="font-size: 1.05rem; padding: 14px; margin: 12px 0;">
+                        $$\text{Trust Score} = (0.15 \cdot C_1) + (0.30 \cdot C_2) + (0.15 \cdot C_3) + (0.25 \cdot C_4) + (0.15 \cdot C_5) = \mathbf{<span id="report-trust-val">0%</span>}$$
                     </div>
                 </div>
 
                 <div class="report-grid">
                     <div class="report-box">
-                        <span class="mod-num">MODULE 1: CONTENT</span>
+                        <span class="mod-num">MOD 1: CONTENT (C1)</span>
                         <strong id="report-c1-val">0%</strong>
-                        <p id="report-c1-desc">RoBERTa textual style classification</p>
+                        <p>RoBERTa style classification</p>
                     </div>
                     <div class="report-box">
-                        <span class="mod-num">MODULE 2: LIVE EVIDENCE</span>
+                        <span class="mod-num">MOD 2: EVIDENCE (C2)</span>
                         <strong id="report-c2-val">0%</strong>
-                        <p id="report-c2-desc">Live news evidence verification</p>
+                        <p>Live news evidence support</p>
                     </div>
                     <div class="report-box">
-                        <span class="mod-num">MODULE 3: CLUSTERING</span>
+                        <span class="mod-num">MOD 3: CLUSTERING (C3)</span>
                         <strong id="report-c3-val">0.00</strong>
-                        <p id="report-c3-desc">Source independence ratio</p>
+                        <p>Source independence ratio (K/N)</p>
+                    </div>
+                    <div class="report-box">
+                        <span class="mod-num">MOD 4: AGENTIC (C4)</span>
+                        <strong id="report-c4-val">0%</strong>
+                        <p>Autonomous Agent Reasoner</p>
+                    </div>
+                    <div class="report-box">
+                        <span class="mod-num">MOD 5: CREDIBILITY (C5)</span>
+                        <strong id="report-c5-val">0.00</strong>
+                        <p>Domain reputation index</p>
                     </div>
                 </div>
             </div>
@@ -408,10 +629,10 @@
 
     </main>
 
-    <!-- Footer (Matching The Sill) -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
-            <p>&copy; 2026 The Fake News AI &bull; Fakeddit Dataset Verification &bull; Built with PyTorch, RoBERTa, Google News RSS, Wikipedia, DuckDuckGo & Sentence-BERT</p>
+            <p>&copy; 2026 The Fake News AI &bull; Autonomous Multi-Agent Fact-Checking Network &bull; Modules 1-6 (RoBERTa, Evidence Retrieval, Clustering, LangGraph Agent, Source Credibility & Trust Score Fusion)</p>
         </div>
     </footer>
 

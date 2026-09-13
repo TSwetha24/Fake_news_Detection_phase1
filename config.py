@@ -31,7 +31,7 @@ GDELT_API_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
 
 # Module 3: Source Independence Analysis Settings
 SENTENCE_BERT_MODEL = "all-MiniLM-L6-v2"
-COSINE_SIMILARITY_THRESHOLD = 0.72  # Threshold above which articles are considered syndicated/duplicates
+COSINE_SIMILARITY_THRESHOLD = 0.50  # Threshold above which articles are considered syndicated/duplicates
 CLUSTERING_METHOD = "agglomerative"  # Agglomerative or DBSCAN
 
 # UI / Server Settings
