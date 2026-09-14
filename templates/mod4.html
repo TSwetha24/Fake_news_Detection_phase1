@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Autonomous System Flow & Agent Verdict — The Fake News AI{% endblock %}
+
+{% block content %}
+<div id="mod4-container" class="page-container">
+
+    <div class="page-header flex-header">
+        <div>
+            <span class="page-eyebrow">FINAL SYNTHESIS HUB • AGENTIC DECISION</span>
+            <h1 class="page-title">Autonomous System Flow & Agent Verdict</h1>
+            <p class="page-sub">Consolidates findings from all preceding analysis modules into a final, layman-friendly verification verdict.</p>
+        </div>
+
+        <div class="count-box">
+            <span class="count-lbl">AGENT CONFIDENCE</span>
+            <span id="agent-score-val" class="count-num text-emerald" style="color: var(--color-emerald);">86%</span>
+            <span id="agent-verdict-sub" class="count-lbl">Final Verdict: Verified Real</span>
+        </div>
+    </div>
+
+    <!-- Final User Verdict Display Banner -->
+    <div class="glass-card" style="margin-bottom: 28px; padding: 32px; border-left: 6px solid var(--color-emerald);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
+            <div>
+                <span class="engine-pill" style="margin-bottom: 6px; display: inline-block;">FINAL SYSTEM SYNTHESIS</span>
+                <h2 style="font-size: 22px; font-weight: 800; color: var(--text-primary);">Consolidated Agentic Finding</h2>
+            </div>
+            <span id="agent-final-badge" class="badge-verdict verdict-real" style="font-size: 15px; padding: 8px 18px;">VERIFIED REAL</span>
+        </div>
+
+        <!-- Subject Claim Display -->
+        <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">ANALYZED SUBJECT CLAIM</span>
+            <div id="agent-claim-display" class="font-serif" style="font-size: 18px; color: var(--text-primary); margin-top: 4px; line-height: 1.4;">"..."</div>
+        </div>
+
+        <!-- Dynamic Layman Consolidation Rationale -->
+        <div id="agent-layman-rationale">
+            <p style="font-size: 15.5px; color: var(--text-secondary); line-height: 1.6;">
+                Synthesizing findings across linguistic patterns, live news feeds, story clusters, and publisher authority ratings.
+            </p>
+        </div>
+    </div>
+
+    <!-- 6-Step End-to-End System Flow Timeline -->
+    <div class="glass-card">
+        <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">End-to-End System Flow Timeline</h3>
+        <p style="font-size: 14px; color: var(--text-muted);">Step-by-step execution path followed by the multi-module network.</p>
+
+        <div class="investigation-timeline">
+
+            <div class="timeline-step">
+                <div class="step-badge">1</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">1. Linguistic Style & Pattern Analysis</h4>
+                        <span class="engine-pill">Completed</span>
+                    </div>
+                    <p class="step-desc">Analyzed text syntax, sensationalism markers, and vocabulary perplexity.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-badge">2</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">2. Live Cross-Source Verification</h4>
+                        <span class="engine-pill">Completed</span>
+                    </div>
+                    <p class="step-desc">Searched live Google News, Wikipedia, DuckDuckGo, and GDELT indexes for claim matches.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-badge">3</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">3. Syndication & Source Clustering</h4>
+                        <span class="engine-pill">Completed</span>
+                    </div>
+                    <p class="step-desc">Grouped matching news passages to separate press wire copy from independent reporting.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-badge">4</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">4. Publisher Authority Matrix</h4>
+                        <span class="engine-pill">Completed</span>
+                    </div>
+                    <p class="step-desc">Evaluated domain factuality tiers and publisher trust reputation scores.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-badge">5</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">5. Multi-Signal Score Synthesis</h4>
+                        <span class="engine-pill">Completed</span>
+                    </div>
+                    <p class="step-desc">Synthesized weighted signal terms into a calibrated Trust Index score.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step">
+                <div class="step-badge">6</div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h4 class="step-title">6. Autonomous Agent Decision</h4>
+                        <span id="timeline-final-verdict-badge" class="badge-verdict verdict-real">Final Decision</span>
+                    </div>
+                    <p class="step-desc">Compiled full system findings into a consolidated layman verdict.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+

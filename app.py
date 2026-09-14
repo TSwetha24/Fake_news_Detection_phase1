@@ -11,8 +11,38 @@ print("Initializing Fake News Detection Server & Pipeline...")
 pipeline = ClaimVerificationPipeline()
 
 @app.route("/")
+@app.route("/overview")
 def index():
-    return render_template("index.html")
+    return render_template("overview.html")
+
+@app.route("/mod1")
+def mod1_page():
+    return render_template("mod1.html")
+
+@app.route("/mod2")
+def mod2_page():
+    return render_template("mod2.html")
+
+@app.route("/mod3")
+def mod3_page():
+    return render_template("mod3.html")
+
+@app.route("/mod4")
+def mod4_page():
+    return render_template("mod4.html")
+
+@app.route("/mod5")
+def mod5_page():
+    return render_template("mod5.html")
+
+@app.route("/mod6")
+def mod6_page():
+    return render_template("mod6.html")
+
+@app.route("/audit")
+@app.route("/report")
+def audit_page():
+    return render_template("audit.html")
 
 @app.route("/api/verify", methods=["POST"])
 def verify_claim():
@@ -44,7 +74,6 @@ def download_report():
             
         pdf_buffer = generate_pdf_report_bytes(verification_data)
         
-        # Clean safe filename
         safe_claim_snippet = "".join([c if c.isalnum() else "_" for c in claim_text[:30]]).strip("_")
         filename = f"TruthChain_Report_{safe_claim_snippet}.pdf"
         
@@ -61,14 +90,13 @@ def download_report():
 @app.route("/api/samples", methods=["GET"])
 def get_sample_claims():
     samples = [
-        {"claim": "NASA's James Webb Space Telescope discovers water vapor on distant exoplanet", "category": "Real"},
-        {"claim": "Secret government laser laboratory caused recent major hurricane outbreak", "category": "Fake"},
-        {"claim": "Global renewable energy capacity grew by a record 50% in 2023, report finds", "category": "Real"},
-        {"claim": "5G cell towers confirmed to cause memory loss and battery drain in humans", "category": "Fake"},
-        {"claim": "Study suggests coffee drinkers live longer, but researchers aren't sure why", "category": "Unverified"}
+        {"claim": "Joseph Vijay is the CM of TamilNadu", "category": "Politics"},
+        {"claim": "M K Stalin is the CM of TamilNadu", "category": "Politics"},
+        {"claim": "NASA's James Webb Space Telescope discovers water vapor on distant exoplanet", "category": "Science"},
+        {"claim": "Global renewable energy capacity grew by a record 50% in 2023, report finds", "category": "Environment"},
+        {"claim": "5G cell towers confirmed to cause memory loss and battery drain in humans", "category": "Tech Rumors"}
     ]
     return jsonify(samples)
 
 if __name__ == "__main__":
     app.run(host=config.SERVER_HOST, port=config.SERVER_PORT, debug=config.DEBUG)
-

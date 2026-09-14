@@ -10,6 +10,7 @@ AUTHORITATIVE_PORTFOLIOS = {
         "tenure_start": "May 2021",
         "is_active": True,
         "disqualified_figures": {
+            "vijay": "Joseph Vijay (Thalapathy Vijay) is an actor and founder of the TVK party, but he is NOT the Chief Minister of Tamil Nadu. The current Chief Minister of Tamil Nadu is M. K. Stalin (DMK).",
             "suriya": "Suriya (Saravanan Sivakumar) is a film actor and philanthropist; he is not an elected government minister.",
             "swetha": "Swetha is not the Chief Minister of Tamil Nadu."
         }

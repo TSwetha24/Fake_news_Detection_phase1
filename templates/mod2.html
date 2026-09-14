@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Live Cross-Source Verification — The Fake News AI{% endblock %}
+
+{% block content %}
+<div id="mod2-container" class="page-container">
+
+    <div class="page-header flex-header">
+        <div>
+            <span class="page-eyebrow">MODULE 2 • LIVE CROSS-SOURCE VERIFICATION</span>
+            <h1 class="page-title">Live Cross-Source Verification Feed</h1>
+            <p class="page-sub">Scans live news reporting platforms to isolate supporting vs contradicting evidence.</p>
+        </div>
+
+        <div class="count-box">
+            <span class="count-lbl">MODULE SCORE</span>
+            <span id="mod2-score-val" class="count-num text-emerald" style="color: var(--color-emerald);">85%</span>
+            <span id="mod2-status-sub" class="count-lbl">Live Source Grounding</span>
+        </div>
+    </div>
+
+    <!-- Active Search Backends Index -->
+    <div class="glass-card" style="margin-bottom: 24px; padding: 20px;">
+        <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; font-family: var(--font-mono); text-transform: uppercase;">ACTIVE LIVE SEARCH INDEXES</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; font-family: var(--font-mono); font-size: 12px;">
+            <span class="engine-pill">Google News RSS</span>
+            <span class="engine-pill">Wikipedia API</span>
+            <span class="engine-pill">DuckDuckGo Live</span>
+            <span class="engine-pill">GDELT v2 Doc Index</span>
+            <span class="engine-pill">NewsAPI Endpoints</span>
+        </div>
+    </div>
+
+    <!-- Article Stance Feed Stack -->
+    <div id="article-list-rows" class="article-rows-list">
+        <!-- Dynamically rendered by app.js (Stance Cards) -->
+    </div>
+
+</div>
+{% endblock %}
+

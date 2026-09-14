@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Executive Audit Brief — The Fake News AI{% endblock %}
+
+{% block content %}
+<div id="audit-container" class="page-container">
+
+    <!-- Action Toolbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+            <span class="page-eyebrow">EXECUTIVE AUDIT BRIEF</span>
+            <h1 class="page-title" style="font-size: 24px; margin-bottom: 0;">Fact Verification Summary Brief</h1>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button onclick="downloadPdfReport()" class="btn btn-emerald btn-sm">
+                Download PDF Report
+            </button>
+            <button onclick="window.print()" class="btn btn-outline btn-sm">
+                Print Audit
+            </button>
+        </div>
+    </div>
+
+    <!-- Formal Executive Briefing Card -->
+    <div class="glass-card" style="padding: 36px;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--text-primary); padding-bottom: 18px; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span class="engine-pill">THE FAKE NEWS AI • AUDIT SUMMARY</span>
+                <h2 style="font-family: var(--font-serif); font-size: 24px; color: var(--text-primary); margin-top: 8px;">Fact Verification Audit Briefing</h2>
+            </div>
+            
+            <div style="text-align: right;">
+                <span id="doc-verdict-badge" class="badge-verdict verdict-real">VERIFIED REAL</span>
+                <div id="doc-trust-score" class="font-mono text-emerald" style="font-weight: 800; font-size: 18px; margin-top: 6px;">Trust Score: 74.34%</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 28px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-light); padding-bottom: 8px; margin-bottom: 12px;">1. Subject Claim Statement</h3>
+            <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 10px; padding: 18px;">
+                <p id="doc-claim-text" class="font-serif" style="font-size: 18px; color: var(--text-primary); line-height: 1.4;">"..."</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 28px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-light); padding-bottom: 8px; margin-bottom: 12px;">2. Synthesis Finding Summary</h3>
+            <p id="doc-rationale-text" style="font-size: 15px; color: var(--text-secondary); line-height: 1.6;">
+                Multi-signal synthesis compiled across linguistic analysis, live cross-source evidence, story clustering, domain credibility, and agentic decision.
+            </p>
+        </div>
+
+        <div style="margin-bottom: 28px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-light); padding-bottom: 8px; margin-bottom: 14px;">3. Cross-Source Evidence Metrics</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+                <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 8px; padding: 16px; text-align: center;">
+                    <span id="doc-cnt-support" class="font-mono text-emerald" style="font-size: 24px; font-weight: 800; display: block;">0</span>
+                    <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Supporting Articles</span>
+                </div>
+                <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 8px; padding: 16px; text-align: center;">
+                    <span id="doc-cnt-refute" class="font-mono text-crimson" style="font-size: 24px; font-weight: 800; display: block;">0</span>
+                    <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Contradicting Articles</span>
+                </div>
+                <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 8px; padding: 16px; text-align: center;">
+                    <span id="doc-cnt-related" class="font-mono text-secondary" style="font-size: 24px; font-weight: 800; display: block;">0</span>
+                    <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Related Articles</span>
+                </div>
+            </div>
+
+            <div class="doc-table-wrap">
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>News Publisher</th>
+                            <th>Article Headline</th>
+                            <th>Stance</th>
+                            <th>Relevance Match</th>
+                        </tr>
+                    </thead>
+                    <tbody id="doc-evidence-tbody">
+                        <!-- Populated by app.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+

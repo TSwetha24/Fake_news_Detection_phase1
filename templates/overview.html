@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Overview & Claim Input — The Fake News AI{% endblock %}
+
+{% block content %}
+<div id="overview-container" class="page-container">
+
+    <!-- Hero Claim Input Container -->
+    <div class="hero-claim-card">
+        <form id="hero-claim-form" onsubmit="handleHeroSubmit(event)">
+            <label for="hero-claim-input" style="font-weight: 700; font-size: 17px; color: var(--text-primary); display: block; margin-bottom: 6px;">
+                Enter News Article Headline or Claim for Verification
+            </label>
+            <textarea id="hero-claim-input" class="claim-textarea" rows="2" placeholder="e.g., Joseph Vijay is the CM of TamilNadu..." required></textarea>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div class="benchmark-chips-row">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Benchmark Claims:</span>
+                    <button type="button" class="benchmark-chip" onclick="runSample('Joseph Vijay is the CM of TamilNadu')">Joseph Vijay CM</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('M K Stalin is the CM of TamilNadu')">M K Stalin CM</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('NASA\'s James Webb Space Telescope discovers water vapor on distant exoplanet')">NASA Webb Exoplanet</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('Global renewable energy capacity grew by a record 50% in 2023, report finds')">Renewable Energy</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('5G cell towers confirmed to cause memory loss and battery drain in humans')">5G Health Rumor</button>
+                </div>
+
+                <button type="submit" class="btn btn-emerald btn-lg">
+                    Verify Claim Across All Modules
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Active Verification Summary Header -->
+    <div id="claim-result-view" class="result-view hidden">
+
+        <div class="verdict-banner" id="verdict-banner">
+            <div style="flex: 1;">
+                <span class="verdict-label">CONSOLIDATED SYNTHESIS VERDICT</span>
+                <div class="verdict-badge-row">
+                    <span id="verdict-badge" class="badge-verdict verdict-real">VERIFIED REAL</span>
+                    <span id="trust-score-sub" class="trust-score-sub font-mono">Trust Score: 74.34%</span>
+                </div>
+                <p id="verdict-rationale" style="font-size: 15px; color: var(--text-secondary); margin-top: 8px;">
+                    Multi-signal synthesis compiled across linguistic analysis, live cross-source evidence, story clustering, domain credibility, and agentic decision.
+                </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px; border-left: 1px solid var(--border-light); padding-left: 24px;">
+                <button onclick="downloadPdfReport()" class="btn btn-emerald btn-sm">
+                    Download PDF Report
+                </button>
+                <span id="exec-time" class="font-mono text-muted" style="font-size: 13px;">Execution Latency: 7.5s</span>
+            </div>
+        </div>
+
+        <!-- 3-Column Module Mini Cards Grid (Functional Names) -->
+        <div style="margin-top: 28px;">
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 18px;">Multi-Module Fact Verification Matrix</h3>
+            
+            <div class="module-mini-cards-grid">
+                
+                <!-- Mod 1 Mini Card -->
+                <div class="mini-module-card" onclick="navigateTo('/mod1')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">MODULE 1</span>
+                        <span id="mod1-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">75%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Linguistic Style & Pattern Analysis</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Evaluates textual probabilities and sensational linguistic patterns.</p>
+                    <span class="btn-text btn-xs">Inspect Analysis &rarr;</span>
+                </div>
+
+                <!-- Mod 2 Mini Card -->
+                <div class="mini-module-card" onclick="navigateTo('/mod2')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">MODULE 2</span>
+                        <span id="mod2-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">85%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Live Cross-Source Verification</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Cross-references reporting across live news search indexes.</p>
+                    <span class="btn-text btn-xs">Inspect Live Feed &rarr;</span>
+                </div>
+
+                <!-- Mod 3 Mini Card -->
+                <div class="mini-module-card" onclick="navigateTo('/mod3')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">MODULE 3</span>
+                        <span id="mod3-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">80%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Syndication & Source Clustering</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Isolates syndicated wire copy from independent reporting chains.</p>
+                    <span class="btn-text btn-xs">Inspect Graph &rarr;</span>
+                </div>
+
+                <!-- Mod 5 Mini Card -->
+                <div class="mini-module-card" onclick="navigateTo('/mod5')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">MODULE 5</span>
+                        <span id="mod5-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">88%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Publisher Authority Matrix</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Evaluates domain credibility ratings and publisher tiers.</p>
+                    <span class="btn-text btn-xs">Inspect Authority &rarr;</span>
+                </div>
+
+                <!-- Mod 6 Mini Card -->
+                <div class="mini-module-card" onclick="navigateTo('/mod6')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">MODULE 6</span>
+                        <span id="mod6-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--color-emerald);">74.34%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Multi-Signal Score Synthesis</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Visual decomposition bar chart and term contributions.</p>
+                    <span class="btn-text btn-xs">Inspect Synthesis &rarr;</span>
+                </div>
+
+                <!-- Mod 4 Mini Card (Post-Audit Synthesis Hub) -->
+                <div class="mini-module-card" onclick="navigateTo('/mod4')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--color-emerald);">FINAL HUB</span>
+                        <span id="mod4-mini-score" class="font-mono" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">86%</span>
+                    </div>
+                    <h4 style="font-size: 15.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Autonomous System Flow & Agent Verdict</h4>
+                    <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px;">Consolidated layman explanation of full system flow and verdict.</p>
+                    <span class="btn-text btn-xs">Inspect Agent Verdict &rarr;</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-card">
+            <div class="loading-spinner"></div>
+            <h3 class="loading-title">Synthesizing Fact Verification Network</h3>
+            <p id="loading-step-text" class="loading-step-text">Cross-referencing live evidence reporting...</p>
+            <div class="progress-bar-wrap">
+                <div id="loading-progress-bar" class="progress-bar-inner"></div>
+            </div>
+            <span class="loading-note">Running multi-signal analysis pipeline...</span>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

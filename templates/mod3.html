@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Syndication & Source Clustering — The Fake News AI{% endblock %}
+
+{% block content %}
+<div id="mod3-container" class="page-container">
+
+    <div class="page-header flex-header">
+        <div>
+            <span class="page-eyebrow">MODULE 3 • SOURCE CLUSTERING</span>
+            <h1 class="page-title">Syndication & Source Clustering Graph</h1>
+            <p class="page-sub">Groups matching stories across publishers to separate press wires from independent reporting chains.</p>
+        </div>
+
+        <div class="count-box">
+            <span class="count-lbl">MODULE SCORE</span>
+            <span id="indep-score-val" class="count-num text-emerald" style="color: var(--color-emerald);">80%</span>
+            <span id="indep-score-sub" class="count-lbl">Source Independence</span>
+        </div>
+    </div>
+
+    <!-- Clustering Methodology Explanation Banner -->
+    <div class="glass-card" style="margin-bottom: 24px; padding: 20px; border-left: 5px solid var(--color-emerald);">
+        <h4 style="font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">How Story Clustering Works:</h4>
+        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+            Retrieved articles are compared using <strong>Sentence-BERT semantic vector embeddings</strong> and <strong>Pairwise Cosine Similarity</strong>. 
+            Articles sharing identical reporting text are grouped into a <strong>Syndicated Wire Cluster</strong>. Unique reporting outlets form <strong>Independent Outlets</strong>. 
+            Hovering over any node in the graph below shows its exact cluster group and cosine similarity match.
+        </p>
+    </div>
+
+    <!-- Interactive Cluster Graph Viewport -->
+    <div class="graph-container-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <span style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Interactive Story Cluster Graph</span>
+            <span style="font-size: 12.5px; font-family: var(--font-mono); color: var(--color-emerald); font-weight: 700;">Hover nodes for layman insights & pairwise similarity</span>
+        </div>
+        <svg id="cluster-svg-graph" class="cluster-svg-graph" viewBox="0 0 800 320">
+            <!-- Dynamically rendered SVG with popover events by app.js -->
+        </svg>
+    </div>
+
+    <!-- Story Clusters Accordion / List -->
+    <div class="glass-card">
+        <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 18px;">Identified Story Clusters & Direct Outlet Links</h3>
+        
+        <div id="cluster-cards-list" class="clusters-list-container" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Dynamically rendered cluster cards by app.js -->
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+

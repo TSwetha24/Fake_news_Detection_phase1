@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}The Fake News AI — Multi-Module Fact Verification Network{% endblock %}</title>
+    
+    <!-- Google Fonts: Inter + JetBrains Mono + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Cyber Glassmorphism Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="editorial-body">
+
+    <!-- Sleek Top Header Navigation -->
+    <header class="masthead">
+        <div class="container masthead-inner">
+            <div class="brand">
+                <a href="/overview" class="brand-link">
+                    <span class="brand-title">The Fake News AI</span>
+                    <div class="brand-pills-wrap">
+                        <span class="engine-pill">Engine: 6 Modules Active</span>
+                        <span class="engine-pill-sub">Agentic AI Verification</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Slide-out Drawer Hamburger Toggle -->
+            <button id="nav-drawer-toggle" onclick="toggleNavDrawer()" class="hamburger-btn" aria-label="Toggle Navigation Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide-out Navigation Drawer Menu -->
+    <div id="nav-drawer" class="nav-drawer overlay-hidden">
+        <div class="drawer-backdrop" onclick="toggleNavDrawer()"></div>
+        <div class="nav-drawer-content">
+            <div class="nav-drawer-header">
+                <div class="nav-drawer-title">Navigation Menu</div>
+                <button onclick="toggleNavDrawer()" class="drawer-close-btn">&times;</button>
+            </div>
+            <nav class="nav-drawer-body">
+                <a href="/overview" class="drawer-nav-link {% if request.path == '/' or request.path == '/overview' %}active{% endif %}">
+                    Overview & Claim Input
+                </a>
+                <a href="/mod1" class="drawer-nav-link {% if request.path == '/mod1' %}active{% endif %}">
+                    Linguistic Style & Pattern Analysis
+                </a>
+                <a href="/mod2" class="drawer-nav-link {% if request.path == '/mod2' %}active{% endif %}">
+                    Live Cross-Source Verification
+                </a>
+                <a href="/mod3" class="drawer-nav-link {% if request.path == '/mod3' %}active{% endif %}">
+                    Syndication & Source Clustering
+                </a>
+                <a href="/mod5" class="drawer-nav-link {% if request.path == '/mod5' %}active{% endif %}">
+                    Publisher Authority Matrix
+                </a>
+                <a href="/mod6" class="drawer-nav-link {% if request.path == '/mod6' %}active{% endif %}">
+                    Multi-Signal Score Synthesis
+                </a>
+                <a href="/audit" class="drawer-nav-link {% if request.path == '/audit' or request.path == '/report' %}active{% endif %}">
+                    Executive Audit Brief
+                </a>
+                <a href="/mod4" class="drawer-nav-link {% if request.path == '/mod4' %}active{% endif %}">
+                    Autonomous System Flow & Agent Verdict
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Active Investigation Notification Bar -->
+    <div id="active-claim-bar" class="active-claim-bar hidden">
+        <div class="container active-claim-inner">
+            <span class="active-claim-label">ACTIVE CLAIM</span>
+            <span id="active-claim-text" class="active-claim-text">"..."</span>
+            <span id="active-verdict-badge" class="badge-verdict verdict-real">REAL</span>
+            <button onclick="clearActiveClaim()" class="btn-text btn-xs">Clear</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Detail Drawer -->
+    <div id="detail-drawer" class="detail-drawer overlay-hidden">
+        <div class="drawer-backdrop" onclick="closeDrawer()"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3 id="drawer-title" class="drawer-title">Item Details</h3>
+                <button onclick="closeDrawer()" class="drawer-close-btn">&times;</button>
+            </div>
+            <div id="drawer-body" class="drawer-body">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal Dark Footer -->
+    <footer class="editorial-footer">
+        <div class="container footer-inner">
+            <div class="footer-col">
+                <span class="footer-brand">The Fake News AI Network</span>
+                <p class="footer-desc">Unified 6-Module Fact Verification & Evidence Synthesis Architecture.</p>
+            </div>
+            <div class="footer-col footer-links">
+                <a href="/overview">Overview & Claim Input</a>
+                <a href="/mod1">Linguistic Style & Pattern Analysis</a>
+                <a href="/mod2">Live Cross-Source Verification</a>
+                <a href="/mod3">Syndication & Source Clustering</a>
+                <a href="/mod5">Publisher Authority Matrix</a>
+                <a href="/mod6">Multi-Signal Score Synthesis</a>
+                <a href="/audit">Executive Audit Brief</a>
+                <a href="/mod4">Autonomous System Flow & Agent Verdict</a>
+            </div>
+            <div class="footer-col footer-right">
+                <span class="footer-copyright">&copy; 2026 The Fake News AI. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Application Script -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+
