@@ -36,22 +36,59 @@ class SourceCredibilityEvaluator:
         weighted_score_sum = 0.0
 
         for art in evidence_articles:
+            raw_source = art.get("source", "")
             raw_domain = art.get("domain", "").lower().replace("http://", "").replace("https://", "").split("/")[0]
             if raw_domain.startswith("www."):
                 raw_domain = raw_domain[4:]
 
-            # Lookup domain in reputation DB (exact match or suffix match)
+            # Un-wrap Google News wrapper if present: "Google News (Nagaland Post)" -> "Nagaland Post"
+            clean_pub_name = raw_source.replace("Google News (", "").rstrip(")").strip()
+            if not clean_pub_name:
+                clean_pub_name = raw_domain
+
+            # Lookup domain or source name in reputation DB
             profile = None
             if raw_domain in self.reputation_db:
                 profile = self.reputation_db[raw_domain]
             else:
+                clean_lower = clean_pub_name.lower()
                 for key, val in self.reputation_db.items():
-                    if key in raw_domain or raw_domain in key:
+                    key_name = val.get("name", "").lower()
+                    domain_name = key.replace(".com", "").replace(".in", "").replace(".co.uk", "").replace(".org", "")
+                    if (domain_name and domain_name in raw_domain) or (domain_name and domain_name in clean_lower) or (clean_lower and clean_lower in key_name):
                         profile = val
                         break
 
             if profile is None:
-                profile = DEFAULT_REPUTATION_PROFILE
+                # Dynamic fallback based on clean_pub_name
+                lower = clean_pub_name.lower()
+                if any(k in lower for k in ["hindu", "reuters", "ap news", "bbc", "pti", "pib", "nature", "wikipedia"]):
+                    profile = {
+                        "name": clean_pub_name,
+                        "tier": "Tier 1: Highly Authoritative",
+                        "credibility_score": 0.95,
+                        "factuality": "HIGH FACTUALITY",
+                        "bias": "LEAST BIASED",
+                        "description": "Primary institutional wire & record-of-fact publisher."
+                    }
+                elif any(k in lower for k in ["times", "express", "ndtv", "today", "mint", "print", "quint", "news18", "guardian"]):
+                    profile = {
+                        "name": clean_pub_name,
+                        "tier": "Tier 2: Mainstream Credible",
+                        "credibility_score": 0.84,
+                        "factuality": "GENERAL REPORTING",
+                        "bias": "CENTER",
+                        "description": "Established commercial national news outlet."
+                    }
+                else:
+                    profile = {
+                        "name": clean_pub_name,
+                        "tier": "Tier 3: Regional / Independent",
+                        "credibility_score": 0.72,
+                        "factuality": "REGIONAL REPORTING",
+                        "bias": "LOCAL PRESS",
+                        "description": "Regional state daily or local publication with localized editorial focus."
+                    }
 
             cred_score = profile["credibility_score"]
             tier_name = profile["tier"].split(":")[0].strip()

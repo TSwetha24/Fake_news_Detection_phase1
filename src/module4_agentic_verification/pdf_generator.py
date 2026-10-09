@@ -116,6 +116,9 @@ def generate_pdf_report_bytes(verification_data: Dict[str, Any]) -> io.BytesIO:
     exec_time = verification_data.get("execution_time_seconds", 0.0)
     timestamp_str = datetime.datetime.now().strftime("%d %B %Y, %I:%M %p")
 
+    trust_fake = round(100.0 - trust_score, 2)
+    trust_real = round(trust_score, 2)
+
     verdict_color = primary_emerald if final_verdict == "REAL" else (colors.HexColor("#dc2626") if final_verdict == "FAKE" else colors.HexColor("#d97706"))
     verdict_desc = "Confirmed by authentic news reports" if final_verdict == "REAL" else ("Contradicted or unsupported by verified facts" if final_verdict == "FAKE" else "Unconfirmed or conflicting evidence")
 
@@ -130,7 +133,7 @@ def generate_pdf_report_bytes(verification_data: Dict[str, Any]) -> io.BytesIO:
         ],
         [
             Paragraph("<b>Overall Trust Rating:</b>", body_style),
-            Paragraph(f"<b>{trust_score}%</b> (Based on 5 combined verification checks)", body_style)
+            Paragraph(f"<b>{trust_fake}% Fake &bull; {trust_real}% Real</b> (Based on 5 combined verification checks)", body_style)
         ],
         [
             Paragraph("<b>Date of Verification:</b>", body_style),

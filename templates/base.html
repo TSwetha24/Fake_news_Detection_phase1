@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}The Fake News AI — Multi-Module Fact Verification Network{% endblock %}</title>
+    <title>{% block title %}TruthChain — Multi-Module Fact Verification Network{% endblock %}</title>
     
     <!-- Google Fonts: Inter + JetBrains Mono + Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,10 +23,10 @@
         <div class="container masthead-inner">
             <div class="brand">
                 <a href="/overview" class="brand-link">
-                    <span class="brand-title">The Fake News AI</span>
+                    <span class="brand-title">TruthChain</span>
                     <div class="brand-pills-wrap">
                         <span class="engine-pill">Engine: 6 Modules Active</span>
-                        <span class="engine-pill-sub">Agentic AI Verification</span>
+                        <span class="engine-pill-sub">Fact Verification System</span>
                     </div>
                 </a>
             </div>
@@ -73,6 +73,9 @@
                 <a href="/mod4" class="drawer-nav-link {% if request.path == '/mod4' %}active{% endif %}">
                     Autonomous System Flow & Agent Verdict
                 </a>
+                <a href="javascript:void(0)" onclick="openBlockchainModal(); toggleNavDrawer();" class="drawer-nav-link" style="color: #059669; font-weight: 700;">
+                    🔗 Blockchain Ledger Explorer
+                </a>
             </nav>
         </div>
     </div>
@@ -106,11 +109,42 @@
         </div>
     </div>
 
+    <!-- Blockchain Explorer Modal -->
+    <div id="blockchain-modal" class="detail-drawer overlay-hidden">
+        <div class="drawer-backdrop" onclick="closeBlockchainModal()"></div>
+        <div class="drawer-content" style="max-width: 800px;">
+            <div class="drawer-header">
+                <div>
+                    <span class="engine-pill" style="background: #059669; color: #fff;">IMMUTABLE BLOCKCHAIN EXPLORER</span>
+                    <h3 class="drawer-title" style="margin-top: 4px;">Verified Claim Blockchain Blocks</h3>
+                </div>
+                <button onclick="closeBlockchainModal()" class="drawer-close-btn">&times;</button>
+            </div>
+            <div class="drawer-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid #10b981; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px;">
+                    <div>
+                        <span id="bc-status-badge" class="badge-verdict verdict-real">CHAIN INTEGRITY: SECURE</span>
+                        <div id="bc-chain-meta" style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                            Total Blocks: 1 | Difficulty: 2 Leading Zeros (PoW)
+                        </div>
+                    </div>
+                    <button onclick="verifyChainIntegrityBtn()" class="btn btn-emerald btn-sm">
+                        Verify Cryptographic Integrity 🔒
+                    </button>
+                </div>
+
+                <div id="blockchain-blocks-container">
+                    <div style="text-align: center; color: var(--text-muted); padding: 20px;">Loading Blockchain Blocks...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Minimal Dark Footer -->
     <footer class="editorial-footer">
         <div class="container footer-inner">
             <div class="footer-col">
-                <span class="footer-brand">The Fake News AI Network</span>
+                <span class="footer-brand">TruthChain Verification Network</span>
                 <p class="footer-desc">Unified 6-Module Fact Verification & Evidence Synthesis Architecture.</p>
             </div>
             <div class="footer-col footer-links">
@@ -124,7 +158,7 @@
                 <a href="/mod4">Autonomous System Flow & Agent Verdict</a>
             </div>
             <div class="footer-col footer-right">
-                <span class="footer-copyright">&copy; 2026 The Fake News AI. All rights reserved.</span>
+                <span class="footer-copyright">&copy; 2026 TruthChain. All rights reserved.</span>
             </div>
         </div>
     </footer>

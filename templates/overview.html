@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Overview & Claim Input — The Fake News AI{% endblock %}
+{% block title %}Overview & Claim Input — TruthChain{% endblock %}
 
 {% block content %}
 <div id="overview-container" class="page-container">
@@ -11,18 +11,9 @@
             <label for="hero-claim-input" style="font-weight: 700; font-size: 17px; color: var(--text-primary); display: block; margin-bottom: 6px;">
                 Enter News Article Headline or Claim for Verification
             </label>
-            <textarea id="hero-claim-input" class="claim-textarea" rows="2" placeholder="e.g., Joseph Vijay is the CM of TamilNadu..." required></textarea>
+            <textarea id="hero-claim-input" class="claim-textarea" rows="2" placeholder="Enter news article headline or claim..." required></textarea>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                <div class="benchmark-chips-row">
-                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Benchmark Claims:</span>
-                    <button type="button" class="benchmark-chip" onclick="runSample('Joseph Vijay is the CM of TamilNadu')">Joseph Vijay CM</button>
-                    <button type="button" class="benchmark-chip" onclick="runSample('M K Stalin is the CM of TamilNadu')">M K Stalin CM</button>
-                    <button type="button" class="benchmark-chip" onclick="runSample('NASA\'s James Webb Space Telescope discovers water vapor on distant exoplanet')">NASA Webb Exoplanet</button>
-                    <button type="button" class="benchmark-chip" onclick="runSample('Global renewable energy capacity grew by a record 50% in 2023, report finds')">Renewable Energy</button>
-                    <button type="button" class="benchmark-chip" onclick="runSample('5G cell towers confirmed to cause memory loss and battery drain in humans')">5G Health Rumor</button>
-                </div>
-
+            <div style="display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <button type="submit" class="btn btn-emerald btn-lg">
                     Verify Claim Across All Modules
                 </button>
@@ -50,6 +41,29 @@
                     Download PDF Report
                 </button>
                 <span id="exec-time" class="font-mono text-muted" style="font-size: 13px;">Execution Latency: 7.5s</span>
+            </div>
+        </div>
+
+        <!-- Blockchain Immutable Proof Badge Card -->
+        <div id="blockchain-proof-card" class="glass-card hidden" style="margin-top: 20px; padding: 18px 24px; border-left: 5px solid #10b981; background: rgba(16, 185, 129, 0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <span class="engine-pill" style="background: #059669; color: #ffffff; font-weight: 700;">BLOCKCHAIN IMMUTABLE LEDGER</span>
+                    <h4 id="blockchain-status-title" style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin-top: 6px; margin-bottom: 2px;">
+                        Verified & Recorded in Block #1
+                    </h4>
+                    <p id="blockchain-hash-text" class="font-mono text-muted" style="font-size: 13px; margin: 0; word-break: break-all;">
+                        Block Hash: 008774ba8884e2d8...
+                    </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span id="blockchain-cache-badge" class="badge-verdict verdict-real" style="background: rgba(16, 185, 129, 0.2); color: #059669; border: 1px solid #10b981;">
+                        IMMUTABLE RECORD
+                    </span>
+                    <button onclick="openBlockchainModal()" class="btn btn-outline btn-sm">
+                        Audit Blockchain Ledger 🔗
+                    </button>
+                </div>
             </div>
         </div>
 

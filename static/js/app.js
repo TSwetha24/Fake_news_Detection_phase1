@@ -1,5 +1,5 @@
 /**
- * THE FAKE NEWS AI — Multi-Module Fact Verification Network
+ * TRUTHCHAIN — Multi-Module Fact Verification Network
  * JavaScript Engine (Clean Light Theme & Multi-Module Verification Presentation)
  */
 
@@ -217,17 +217,160 @@ function renderOverviewView(data) {
         verdictBanner.className = `verdict-banner ${isReal ? "" : "fake-banner"}`;
     }
 
-    document.getElementById("trust-score-sub").textContent = `Trust Score: ${(data.preliminary_trust_score || 74.34).toFixed(2)}%`;
+    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : 24.0);
+    const trustFake = (100 - trustReal);
+
+    document.getElementById("trust-score-sub").textContent = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real`;
     document.getElementById("verdict-rationale").textContent = data.verdict_rationale || "Multi-signal synthesis compiled across linguistic analysis, live cross-source evidence, story clustering, domain credibility, and agentic decision.";
-    document.getElementById("exec-time").innerHTML = `Execution Latency: ${data.execution_time_seconds || 7.5}s`;
+    
+    // Blockchain Proof Card Handling
+    const bcProofCard = document.getElementById("blockchain-proof-card");
+    const bcInfo = data.blockchain_info;
+    if (bcProofCard && bcInfo) {
+        bcProofCard.classList.remove("hidden");
+        const titleElem = document.getElementById("blockchain-status-title");
+        const hashElem = document.getElementById("blockchain-hash-text");
+        const badgeElem = document.getElementById("blockchain-cache-badge");
+
+        const isCached = bcInfo.is_cached_in_blockchain;
+        if (titleElem) {
+            titleElem.textContent = isCached
+                ? `⚡ Instant Retrieval from Blockchain Ledger (Block #${bcInfo.block_index})`
+                : `🔒 Verified & Mined into Blockchain Ledger (Block #${bcInfo.block_index})`;
+        }
+        if (hashElem) {
+            hashElem.textContent = `Block Hash: ${bcInfo.block_hash} | Timestamp: ${bcInfo.verified_at}`;
+        }
+        if (badgeElem) {
+            badgeElem.textContent = isCached ? "PRE-VERIFIED LEDGER HIT" : "NEW BLOCK MINED";
+            badgeElem.className = `badge-verdict ${isCached ? "verdict-real" : "verdict-fake"}`;
+            badgeElem.style.background = isCached ? "rgba(16, 185, 129, 0.2)" : "rgba(59, 130, 246, 0.2)";
+            badgeElem.style.color = isCached ? "#059669" : "#2563eb";
+            badgeElem.style.borderColor = isCached ? "#10b981" : "#3b82f6";
+        }
+        document.getElementById("exec-time").innerHTML = isCached 
+            ? `<span style="color:#059669; font-weight:700;">⚡ Blockchain Cache Hit (0.01s)</span>`
+            : `Execution Latency: ${data.execution_time_seconds || 7.5}s`;
+    } else if (bcProofCard) {
+        bcProofCard.classList.add("hidden");
+        document.getElementById("exec-time").innerHTML = `Execution Latency: ${data.execution_time_seconds || 7.5}s`;
+    }
 
     const scores = data.module_confidence_scores || {};
     if (document.getElementById("mod1-mini-score")) document.getElementById("mod1-mini-score").textContent = `${Math.round((scores.module1_content_confidence || 0.75) * 100)}%`;
     if (document.getElementById("mod2-mini-score")) document.getElementById("mod2-mini-score").textContent = `${Math.round((scores.module2_evidence_confidence || 0.85) * 100)}%`;
     if (document.getElementById("mod3-mini-score")) document.getElementById("mod3-mini-score").textContent = `${Math.round((scores.module3_independence_confidence || 0.80) * 100)}%`;
     if (document.getElementById("mod5-mini-score")) document.getElementById("mod5-mini-score").textContent = `${Math.round((scores.module5_credibility_confidence || 0.88) * 100)}%`;
-    if (document.getElementById("mod6-mini-score")) document.getElementById("mod6-mini-score").textContent = `${(data.preliminary_trust_score || 74.34).toFixed(2)}%`;
+    if (document.getElementById("mod6-mini-score")) document.getElementById("mod6-mini-score").textContent = `${trustFake.toFixed(1)}% F / ${trustReal.toFixed(1)}% R`;
     if (document.getElementById("mod4-mini-score")) document.getElementById("mod4-mini-score").textContent = `${Math.round((scores.module4_agentic_confidence || 0.86) * 100)}%`;
+    if (document.getElementById("mod4-mini-score")) document.getElementById("mod4-mini-score").textContent = `${Math.round((scores.module4_agentic_confidence || 0.86) * 100)}%`;
+}
+
+// --------------------------------------------------------------------------
+// Blockchain Explorer UI Handlers
+// --------------------------------------------------------------------------
+function openBlockchainModal() {
+    const modal = document.getElementById("blockchain-modal");
+    if (modal) {
+        modal.classList.remove("overlay-hidden");
+        fetchBlockchainChain();
+    }
+}
+
+function closeBlockchainModal() {
+    const modal = document.getElementById("blockchain-modal");
+    if (modal) {
+        modal.classList.add("overlay-hidden");
+    }
+}
+
+async function fetchBlockchainChain() {
+    const container = document.getElementById("blockchain-blocks-container");
+    if (!container) return;
+
+    container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">Fetching live ledger blocks...</div>`;
+
+    try {
+        const response = await fetch("/api/blockchain/chain");
+        if (!response.ok) throw new Error("Failed to load blockchain ledger.");
+        const data = await response.json();
+
+        const badge = document.getElementById("bc-status-badge");
+        const meta = document.getElementById("bc-chain-meta");
+        if (badge) {
+            badge.textContent = data.is_valid ? "CHAIN INTEGRITY: SECURE & TAMPER-PROOF" : "TAMPER WARNING DETECTED";
+            badge.className = `badge-verdict ${data.is_valid ? 'verdict-real' : 'verdict-fake'}`;
+        }
+        if (meta) {
+            meta.textContent = `Total Blocks: ${data.total_blocks} | Difficulty: ${data.difficulty} PoW | Latest Hash: ${data.latest_block_hash ? data.latest_block_hash.substring(0, 16) + '...' : 'N/A'}`;
+        }
+
+        const blocks = data.blocks || [];
+        if (blocks.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No blocks mined yet.</div>`;
+            return;
+        }
+
+        container.innerHTML = blocks.map(b => {
+            const isGenesis = b.index === 0;
+            const isReal = (b.verdict || "").toUpperCase() === "REAL";
+            const verdictBadgeClass = isGenesis ? "verdict-real" : (isReal ? "verdict-real" : "verdict-fake");
+            
+            return `
+                <div style="background: var(--bg-canvas); border: 1px solid var(--border-light); border-radius: 10px; padding: 18px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <span class="engine-pill" style="background: ${isGenesis ? '#6b7280' : (isReal ? '#059669' : '#dc2626')}; color: #fff; font-weight: 700;">
+                                BLOCK #${b.index}
+                            </span>
+                            <span style="font-size: 13px; color: var(--text-muted); margin-left: 8px;">
+                                ${b.timestamp}
+                            </span>
+                        </div>
+                        <span class="badge-verdict ${verdictBadgeClass}">
+                            ${b.verdict}
+                        </span>
+                    </div>
+
+                    <div style="margin-bottom: 10px;">
+                        <strong style="font-size: 14.5px; color: var(--text-primary); display: block; margin-bottom: 4px;">Claim:</strong>
+                        <p class="font-serif" style="font-size: 15px; color: var(--text-primary); margin: 0; background: rgba(0,0,0,0.02); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--border-light);">
+                            "${escapeHtml(b.claim)}"
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); background: rgba(0,0,0,0.02); padding: 10px; border-radius: 6px;">
+                        <div>
+                            <span style="color: var(--text-muted); font-weight: 600;">Block Hash:</span><br>
+                            <span style="word-break: break-all; color: #059669; font-weight: 600;">${b.hash}</span>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-muted); font-weight: 600;">Previous Hash:</span><br>
+                            <span style="word-break: break-all; color: var(--text-muted);">${b.previous_hash}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div style="color: var(--color-crimson); padding: 15px; text-align: center;">Error loading blockchain blocks: ${err.message}</div>`;
+    }
+}
+
+async function verifyChainIntegrityBtn() {
+    try {
+        const res = await fetch("/api/blockchain/verify_chain");
+        const data = await res.json();
+        if (data.is_valid) {
+            alert(`✅ Blockchain Audit Passed!\n\nAll ${data.total_blocks} blocks are cryptographically valid and tamper-proof.`);
+        } else {
+            alert(`⚠️ WARNING: Blockchain Tampering Detected!\n\nBlock hash mismatch in ledger.`);
+        }
+    } catch (e) {
+        alert("Error auditing chain: " + e.message);
+    }
 }
 
 function renderMod1View(data) {
@@ -535,39 +678,107 @@ function renderClusterSVGGraph(svgId, mod3Data, articles, clusters) {
     });
 }
 
-function renderMod5View(data) {
-    const container = document.getElementById("publisher-matrix-grid");
-    if (!data || !container) return;
-
-    const articles = getCanonicalArticles(data);
+function extractRealPublisherName(art) {
+    if (!art) return "Verified News Source";
+    let raw = art.source || art.publisher_name || art.domain || "";
     
-    // Extract unique publishers from retrieved evidence or provide default list
+    // Clean wrapper "Google News (X)" -> "X"
+    if (raw.toLowerCase().includes("google news")) {
+        let match = raw.match(/\((.*?)\)/);
+        if (match && match[1]) return match[1].trim();
+        raw = raw.replace(/google news/i, "").replace(/[()]/g, "").trim();
+    }
+
+    if (raw && raw !== "General Digital Media Outlet" && raw !== "Verified Outlet") {
+        return raw;
+    }
+
+    // Try extracting from article title: "Headline text - Publisher Name"
+    const title = art.title || "";
+    if (title.includes(" - ")) {
+        const parts = title.split(" - ");
+        const lastPart = parts[parts.length - 1].trim();
+        if (lastPart.length > 2 && lastPart.length < 40) return lastPart;
+    } else if (title.includes(" | ")) {
+        const parts = title.split(" | ");
+        const lastPart = parts[parts.length - 1].trim();
+        if (lastPart.length > 2 && lastPart.length < 40) return lastPart;
+    }
+
+    // Format domain name: "deccanherald.com" -> "Deccan Herald"
+    let domain = (art.domain || "").replace(/^(https?:\/\/)?(www\.)?/, "").split("/")[0];
+    if (domain) {
+        domain = domain.replace(/\.com|\.in|\.co\.uk|\.org|\.net/g, "");
+        const domLower = domain.toLowerCase();
+        if (domLower.includes("hindu")) return "The Hindu";
+        if (domLower.includes("timesofindia") || domLower.includes("indiatimes")) return "The Times of India";
+        if (domLower.includes("deccanherald")) return "Deccan Herald";
+        if (domLower.includes("indianexpress")) return "The Indian Express";
+        if (domLower.includes("livemint") || domLower.includes("mint")) return "Livemint";
+        if (domLower.includes("nagalandpost")) return "Nagaland Post";
+        if (domLower.includes("udayavani")) return "Udayavani";
+        if (domLower.includes("ndtv")) return "NDTV";
+        if (domLower.includes("indiatoday")) return "India Today";
+        if (domLower.includes("hindustantimes")) return "Hindustan Times";
+        return domain.charAt(0).toUpperCase() + domain.slice(1);
+    }
+
+    return "Verified News Outlet";
+}
+
+function renderMod5View(data) {
+    const t1Container = document.getElementById("tier1-matrix-container");
+    const t2Container = document.getElementById("tier2-matrix-container");
+    const t3Container = document.getElementById("tier3-matrix-container");
+    if (!data) return;
+
+    // Get all articles retrieved in Module 2
+    const articles = getCanonicalArticles(data);
+    let evaluatedSources = [];
+    if (data.module5_credibility && Array.isArray(data.module5_credibility.evaluated_sources)) {
+        evaluatedSources = data.module5_credibility.evaluated_sources;
+    }
+
     let publishersMap = {};
 
-    if (articles.length > 0) {
-        articles.forEach(art => {
-            const pubName = art.source || art.domain || 'Verified Outlet';
-            if (!publishersMap[pubName]) {
-                const lower = pubName.toLowerCase();
-                let tier = "Tier 1";
-                let factuality = "HIGH FACTUALITY";
-                let trustScore = "92%";
-                let rationale = "Flagship national daily with transparent editorial board & strict fact verification standards.";
+    // Process every single article from Module 2 evidence
+    const sourceListToProcess = articles.length > 0 ? articles : evaluatedSources;
 
-                if (lower.includes("times") || lower.includes("express") || lower.includes("ndtv") || lower.includes("today") || lower.includes("mint")) {
-                    tier = "Tier 2";
-                    factuality = "GENERAL REPORTING";
-                    trustScore = "82%";
-                    rationale = "Established commercial digital news outlet with high-volume fast news syndication.";
-                } else if (lower.includes("hindu") || lower.includes("reuters") || lower.includes("ap") || lower.includes("bbc") || lower.includes("pib") || lower.includes("google")) {
+    if (sourceListToProcess.length > 0) {
+        sourceListToProcess.forEach(art => {
+            const cleanName = extractRealPublisherName(art);
+
+            if (!publishersMap[cleanName]) {
+                const lower = cleanName.toLowerCase();
+                let tier = "Tier 2";
+                let factuality = "GENERAL REPORTING";
+                let trustScore = "84%";
+                let rationale = "Established commercial digital news outlet with high-volume fast news syndication.";
+
+                // Tier 1: Flagship Institutional Wire & Record-of-Fact Outlets
+                if (lower.includes("hindu") || lower.includes("reuters") || lower.includes("associated press") || lower.includes("ap news") || lower.includes("bbc") || lower.includes("pti") || lower.includes("press trust") || lower.includes("pib") || lower.includes("nature") || lower.includes("wikipedia")) {
                     tier = "Tier 1";
                     factuality = "HIGH FACTUALITY";
                     trustScore = "95%";
                     rationale = "Primary national institutional wire & record-of-fact publisher with independent editorial oversight.";
                 }
+                // Tier 2: Mainstream National Digital & Commercial Press
+                else if (lower.includes("times of india") || lower.includes("indian express") || lower.includes("deccan herald") || lower.includes("ndtv") || lower.includes("india today") || lower.includes("hindustan times") || lower.includes("mint") || lower.includes("print") || lower.includes("quint") || lower.includes("news18") || lower.includes("guardian") || lower.includes("nytimes")) {
+                    tier = "Tier 2";
+                    factuality = "GENERAL REPORTING";
+                    trustScore = "84%";
+                    rationale = "Established commercial national news daily with widespread reporting bureaus.";
+                }
+                // Tier 3: Regional / Local / Independent Publications & Aggregators
+                else {
+                    tier = "Tier 3";
+                    factuality = "REGIONAL / INDEPENDENT";
+                    trustScore = "72%";
+                    rationale = "Regional state daily or local publication with localized editorial focus.";
+                }
 
-                publishersMap[pubName] = {
-                    name: pubName,
+                publishersMap[cleanName] = {
+                    name: cleanName,
                     factuality: factuality,
                     tier: tier,
                     trust: trustScore,
@@ -578,18 +789,23 @@ function renderMod5View(data) {
     }
 
     const publishersList = Object.values(publishersMap);
-    const displayList = publishersList.length > 0 ? publishersList : [
-        { name: "The Hindu Editorial", factuality: "HIGH FACTUALITY", tier: "Tier 1", trust: "95%", rationale: "Primary national newspaper with strict editorial review and independent ombudsman." },
-        { name: "Times of India Wire", factuality: "GENERAL REPORTING", tier: "Tier 2", trust: "82%", rationale: "Major commercial daily offering high-volume breaking news coverage." },
-        { name: "NDTV News Bureau", factuality: "GENERAL REPORTING", tier: "Tier 2", trust: "80%", rationale: "Established national broadcaster with active investigative news desk." },
-        { name: "Google News Feed Index", factuality: "HIGH FACTUALITY", tier: "Tier 1", trust: "90%", rationale: "Aggregated index filtering top verified journalistic publications." }
-    ];
+    
+    // Group into Tier 1, Tier 2, Tier 3 lists
+    const tier1List = publishersList.filter(p => p.tier === "Tier 1");
+    const tier2List = publishersList.filter(p => p.tier === "Tier 2");
+    const tier3List = publishersList.filter(p => p.tier === "Tier 3" || p.tier === "Tier 4");
 
-    container.innerHTML = displayList.map(pub => `
+    // Update Count Badges
+    if (document.getElementById("tier1-count-badge")) document.getElementById("tier1-count-badge").textContent = `${tier1List.length} Publishers`;
+    if (document.getElementById("tier2-count-badge")) document.getElementById("tier2-count-badge").textContent = `${tier2List.length} Publishers`;
+    if (document.getElementById("tier3-count-badge")) document.getElementById("tier3-count-badge").textContent = `${tier3List.length} Publishers`;
+
+    // Render Function
+    const createCardHtml = (pub, badgeBg, badgeColor) => `
         <div class="glass-card" style="padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                 <h4 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">${escapeHtml(pub.name)}</h4>
-                <span class="engine-pill" style="background: ${pub.tier === 'Tier 1' ? 'rgba(5,150,105,0.1)' : 'rgba(8,145,178,0.1)'}; color: ${pub.tier === 'Tier 1' ? 'var(--color-emerald)' : '#0891B2'};">${pub.tier}</span>
+                <span class="engine-pill" style="background: ${badgeBg}; color: ${badgeColor};">${pub.tier}</span>
             </div>
             <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 8px;">${pub.factuality}</span>
             <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 12px;">
@@ -600,7 +816,34 @@ function renderMod5View(data) {
                 <span class="font-mono text-emerald" style="font-weight: 800; font-size: 15px;">${pub.trust}</span>
             </div>
         </div>
-    `).join("");
+    `;
+
+    // Render Tier 1
+    if (t1Container) {
+        if (tier1List.length === 0) {
+            t1Container.innerHTML = `<div style="grid-column: 1/-1; padding: 16px; color: var(--text-muted); text-align: center; background: rgba(5,150,105,0.03); border: 1px dashed var(--color-emerald); border-radius: 8px;">No Tier 1 wire outlets present in current evidence set.</div>`;
+        } else {
+            t1Container.innerHTML = tier1List.map(pub => createCardHtml(pub, 'rgba(5,150,105,0.1)', 'var(--color-emerald)')).join("");
+        }
+    }
+
+    // Render Tier 2
+    if (t2Container) {
+        if (tier2List.length === 0) {
+            t2Container.innerHTML = `<div style="grid-column: 1/-1; padding: 16px; color: var(--text-muted); text-align: center; background: rgba(8,145,178,0.03); border: 1px dashed #0891B2; border-radius: 8px;">No Tier 2 commercial outlets present in current evidence set.</div>`;
+        } else {
+            t2Container.innerHTML = tier2List.map(pub => createCardHtml(pub, 'rgba(8,145,178,0.1)', '#0891B2')).join("");
+        }
+    }
+
+    // Render Tier 3
+    if (t3Container) {
+        if (tier3List.length === 0) {
+            t3Container.innerHTML = `<div style="grid-column: 1/-1; padding: 16px; color: var(--text-muted); text-align: center; background: rgba(217,119,6,0.03); border: 1px dashed #D97706; border-radius: 8px;">No Tier 3 regional/independent outlets present in current evidence set.</div>`;
+        } else {
+            t3Container.innerHTML = tier3List.map(pub => createCardHtml(pub, 'rgba(217,119,6,0.1)', '#D97706')).join("");
+        }
+    }
 }
 
 function renderMod6View(data) {
@@ -612,10 +855,12 @@ function renderMod6View(data) {
     const c4 = scores.module4_agentic_confidence || 0.86;
     const c5 = scores.module5_credibility_confidence || 0.88;
 
-    const trustScore = (data.preliminary_trust_score || 74.34).toFixed(2);
+    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : 24.0);
+    const trustFake = 100 - trustReal;
+    const trustStr = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real`;
 
-    if (document.getElementById("fusion-score-val")) document.getElementById("fusion-score-val").textContent = `${trustScore}%`;
-    if (document.getElementById("row-total-term")) document.getElementById("row-total-term").textContent = `${trustScore}%`;
+    if (document.getElementById("fusion-score-val")) document.getElementById("fusion-score-val").textContent = trustStr;
+    if (document.getElementById("row-total-term")) document.getElementById("row-total-term").textContent = trustStr;
 
     // Render Visual Score Decomposition Bars
     const listContainer = document.getElementById("score-decomp-bars-list");
@@ -672,11 +917,14 @@ function renderAuditView(data) {
     const rawVerdict = (data.final_verdict || "REAL").toUpperCase();
     const isReal = rawVerdict === "REAL";
 
+    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : 24.0);
+    const trustFake = 100 - trustReal;
+
     if (document.getElementById("doc-verdict-badge")) {
         document.getElementById("doc-verdict-badge").textContent = isReal ? "VERIFIED REAL" : "CONTRADICTED FAKE";
         document.getElementById("doc-verdict-badge").className = `badge-verdict ${isReal ? "verdict-real" : "verdict-fake"}`;
     }
-    if (document.getElementById("doc-trust-score")) document.getElementById("doc-trust-score").textContent = `Trust Score: ${(data.preliminary_trust_score || 74.34).toFixed(2)}%`;
+    if (document.getElementById("doc-trust-score")) document.getElementById("doc-trust-score").textContent = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real`;
 
     if (document.getElementById("doc-claim-text")) document.getElementById("doc-claim-text").textContent = `"${data.claim || ''}"`;
     if (document.getElementById("doc-rationale-text")) document.getElementById("doc-rationale-text").textContent = data.verdict_rationale || "Evidence evaluated across live reporting sources.";
@@ -711,7 +959,11 @@ function renderMod4View(data) {
     const claim = data.claim || "Subject Claim Statement";
     const rawVerdict = (data.final_verdict || "REAL").toUpperCase();
     const isReal = rawVerdict === "REAL";
-    const trustScore = (data.preliminary_trust_score || 74.34).toFixed(2);
+
+    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : 24.0);
+    const trustFake = (100 - trustReal);
+    const trustScoreStr = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real`;
+
     const rationale = data.verdict_rationale || "Multi-signal synthesis compiled across all 6 verification modules.";
 
     const articles = getCanonicalArticles(data);
@@ -760,8 +1012,8 @@ function renderMod4View(data) {
                     <span style="font-size: 14px; color: var(--text-secondary);">Evaluated publisher domain credibility and NewsGuard/MBFC factuality ratings. Reporting sources hold Tier-1 established domain authority.</span>
                 </div>
                 <div style="background: ${isReal ? 'var(--bg-emerald-light)' : 'var(--bg-crimson-light)'}; border: 1px solid ${isReal ? 'var(--border-emerald)' : 'var(--border-crimson)'}; border-radius: 10px; padding: 16px 20px;">
-                    <strong style="color: ${isReal ? 'var(--color-emerald)' : 'var(--color-crimson)'}; font-size: 15px; display: block; margin-bottom: 4px;">5. Final Consolidated Agentic Verdict (${trustScore}% Trust Index):</strong>
-                    <span style="font-size: 14.5px; color: var(--text-primary);">Combining weighted terms across all modules yields a final calibrated Trust Index score of <strong>${trustScore}%</strong>. The agentic decision engine concludes that the claim is <strong>${isReal ? 'VERIFIED REAL' : 'CONTRADICTED FAKE'}</strong>.</span>
+                    <strong style="color: ${isReal ? 'var(--color-emerald)' : 'var(--color-crimson)'}; font-size: 15px; display: block; margin-bottom: 4px;">5. Final Consolidated Agentic Verdict (${trustScoreStr}):</strong>
+                    <span style="font-size: 14.5px; color: var(--text-primary);">Combining weighted terms across all modules yields a final calibrated score breakdown of <strong>${trustScoreStr}</strong>. The agentic decision engine concludes that the claim is <strong>${isReal ? 'VERIFIED REAL' : 'CONTRADICTED FAKE'}</strong>.</span>
                 </div>
             </div>
         `;

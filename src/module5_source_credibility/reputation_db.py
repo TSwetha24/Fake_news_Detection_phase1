@@ -195,8 +195,32 @@ DOMAIN_REPUTATION_DATABASE: Dict[str, Dict[str, Any]] = {
     },
 
     # -------------------------------------------------------------
-    # TIER 3: Entertainment / Lifestyle / Tabloid / Mixed (Score 0.50 - 0.74)
+    # TIER 3: Regional / Local / Independent Press (Score 0.65 - 0.74)
     # -------------------------------------------------------------
+    "nagalandpost.com": {
+        "name": "Nagaland Post",
+        "tier": "Tier 3: Regional / Independent",
+        "credibility_score": 0.72,
+        "factuality": "REGIONAL REPORTING",
+        "bias": "LOCAL PRESS",
+        "description": "English daily newspaper published from Dimapur, Nagaland focusing on regional state news."
+    },
+    "udayavani.com": {
+        "name": "Udayavani",
+        "tier": "Tier 3: Regional / Independent",
+        "credibility_score": 0.70,
+        "factuality": "REGIONAL REPORTING",
+        "bias": "LOCAL PRESS",
+        "description": "Kannada language regional daily newspaper published from Manipal, Karnataka."
+    },
+    "livemint.com": {
+        "name": "Livemint",
+        "tier": "Tier 2: Mainstream Credible",
+        "credibility_score": 0.82,
+        "factuality": "GENERAL REPORTING",
+        "bias": "BUSINESS / FINANCIAL",
+        "description": "Indian financial and business news daily published by HT Media."
+    },
     "pinkvilla.com": {
         "name": "Pinkvilla",
         "tier": "Tier 3: Mixed / Entertainment",

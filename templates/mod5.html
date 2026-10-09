@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Publisher Authority Matrix — The Fake News AI{% endblock %}
+{% block title %}Publisher Authority Matrix — TruthChain{% endblock %}
 
 {% block content %}
 <div id="mod5-container" class="page-container">
@@ -41,9 +41,46 @@
         </div>
     </div>
 
-    <!-- 4-Column Responsive Publisher Matrix Grid -->
-    <div class="module-mini-cards-grid" id="publisher-matrix-grid">
-        <!-- Dynamically rendered by app.js -->
+    <!-- Differential Tier 1 Section -->
+    <div style="margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--color-emerald); padding-bottom: 8px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="engine-pill" style="background: var(--color-emerald); color: #fff; font-weight: 700;">TIER 1 OUTLETS</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">🏆 Primary Institutional & Wire Services (High Factuality)</h3>
+            </div>
+            <span id="tier1-count-badge" class="font-mono text-emerald" style="font-weight: 800; font-size: 15px;">0 Publishers</span>
+        </div>
+        <div id="tier1-matrix-container" class="module-mini-cards-grid">
+            <!-- Dynamically rendered by app.js -->
+        </div>
+    </div>
+
+    <!-- Differential Tier 2 Section -->
+    <div style="margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0891B2; padding-bottom: 8px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="engine-pill" style="background: #0891B2; color: #fff; font-weight: 700;">TIER 2 OUTLETS</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">📰 Mainstream Commercial Digital Press (General Reporting)</h3>
+            </div>
+            <span id="tier2-count-badge" class="font-mono" style="font-weight: 800; font-size: 15px; color: #0891B2;">0 Publishers</span>
+        </div>
+        <div id="tier2-matrix-container" class="module-mini-cards-grid">
+            <!-- Dynamically rendered by app.js -->
+        </div>
+    </div>
+
+    <!-- Differential Tier 3 Section -->
+    <div style="margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #D97706; padding-bottom: 8px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="engine-pill" style="background: #D97706; color: #fff; font-weight: 700;">TIER 3 OUTLETS</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">⚠️ Regional, Local & Independent Outlets</h3>
+            </div>
+            <span id="tier3-count-badge" class="font-mono" style="font-weight: 800; font-size: 15px; color: #D97706;">0 Publishers</span>
+        </div>
+        <div id="tier3-matrix-container" class="module-mini-cards-grid">
+            <!-- Dynamically rendered by app.js -->
+        </div>
     </div>
 
 </div>

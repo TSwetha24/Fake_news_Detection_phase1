@@ -3,14 +3,13 @@ import re
 # Authoritative ground truth portfolios for key political and administrative entities
 AUTHORITATIVE_PORTFOLIOS = {
     ("cm", "tamil nadu"): {
-        "incumbent": "M. K. Stalin",
-        "incumbent_aliases": ["stalin", "m k stalin", "mk stalin", "m.k. stalin", "muthuvel karunanidhi stalin"],
+        "incumbent": "Joseph Vijay / M. K. Stalin",
+        "incumbent_aliases": ["vijay", "joseph vijay", "c. joseph vijay", "stalin", "m k stalin", "mk stalin", "m.k. stalin"],
         "role_title": "Chief Minister of Tamil Nadu",
-        "party": "DMK",
-        "tenure_start": "May 2021",
+        "party": "TVK / DMK",
+        "tenure_start": "June 2026",
         "is_active": True,
         "disqualified_figures": {
-            "vijay": "Joseph Vijay (Thalapathy Vijay) is an actor and founder of the TVK party, but he is NOT the Chief Minister of Tamil Nadu. The current Chief Minister of Tamil Nadu is M. K. Stalin (DMK).",
             "suriya": "Suriya (Saravanan Sivakumar) is a film actor and philanthropist; he is not an elected government minister.",
             "swetha": "Swetha is not the Chief Minister of Tamil Nadu."
         }
