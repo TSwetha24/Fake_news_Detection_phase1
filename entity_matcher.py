@@ -348,3 +348,300 @@ def analyze_entity_role_relations(claim_text: str, evidence_articles: list):
     return patch_analyze_extended_roles(claim_text, evidence_articles, res)
 
 
+
+# ==============================================================================
+# CLAIM DECOMPOSITION & ENTITY/LOCATION CONSISTENCY ENGINE
+# ==============================================================================
+
+MAJOR_LOCATIONS = {
+    "chennai": ["chennai", "madras"],
+    "mumbai": ["mumbai", "bombay", "thane", "navi mumbai"],
+    "delhi": ["delhi", "new delhi", "ncr", "noida", "gurgaon"],
+    "bengaluru": ["bengaluru", "bangalore"],
+    "kolkata": ["kolkata", "calcutta"],
+    "hyderabad": ["hyderabad", "secunderabad"],
+    "kerala": ["kerala", "kochi", "thiruvananthapuram", "cochin"],
+    "tamil nadu": ["tamil nadu", "tamilnadu", "tn", "coimbatore", "madurai", "trichy", "salem"],
+    "maharashtra": ["maharashtra", "pune", "nagpur"],
+    "karnataka": ["karnataka", "mysuru", "mangalore"],
+    "nanjing": ["nanjing", "jiangsu", "china"],
+    "toronto": ["toronto", "ontario", "canada"],
+    "london": ["london", "uk", "united kingdom"],
+    "new york": ["new york", "nyc", "usa"]
+}
+
+MAJOR_ORGANIZATIONS_AND_SYSTEMS = {
+    "chennai metro": ["chennai metro", "cmrl", "chennai metro rail"],
+    "namma metro": ["namma metro", "bengaluru metro", "bangalore metro", "bmrcl"],
+    "nanjing metro": ["nanjing metro"],
+    "toronto subway": ["toronto subway", "ttc"],
+    "mumbai metro": ["mumbai metro", "mmrc", "mmrda"],
+    "delhi metro": ["delhi metro", "dmrc"],
+    "indian railways": ["indian railways", "irctc", "railway board", "railways"],
+    "suburban railway": ["local trains", "suburban train", "suburban railway", "western railway", "central railway", "harbour line"],
+    "chennai central station": ["chennai central railway station", "chennai central", "puratchi thalaivar", "mgr central"],
+    "who": ["who", "world health organization"],
+    "icmr": ["icmr", "indian council of medical research"],
+    "nasa": ["nasa", "national aeronautics and space"],
+    "isro": ["isro", "indian space research organisation"],
+    "rbi": ["rbi", "reserve bank of india"],
+    "npci": ["npci", "national payments corporation", "upi"]
+}
+
+GENERIC_TRANSIT_WORDS = {
+    "train", "trains", "railway", "railways", "metro", "expansion", "cancelled",
+    "cancellation", "cancellations", "public", "government", "project", "backlash",
+    "services", "passenger", "passengers", "line", "lines", "station", "delay", "delays"
+}
+
+
+def decompose_claim(claim_text: str) -> dict:
+    """
+    Decomposes a claim into structured entities:
+    - Target Locations (e.g. ['chennai'])
+    - Target Organizations / Systems (e.g. ['chennai metro'])
+    - Key Actions / Events (e.g. ['expansion plans', 'gives up', 'backlash'])
+    - Temporal / Plausibility attributes
+    """
+    claim_lower = claim_text.lower()
+    
+    # 1. Detect Geographic Anchors
+    detected_locations = []
+    for loc_key, aliases in MAJOR_LOCATIONS.items():
+        if any(re.search(rf'\b{re.escape(al)}\b', claim_lower) for al in aliases):
+            detected_locations.append(loc_key)
+            
+    # 2. Detect Specific Organizations / Systems
+    detected_orgs = []
+    for org_key, aliases in MAJOR_ORGANIZATIONS_AND_SYSTEMS.items():
+        if any(re.search(rf'\b{re.escape(al)}\b', claim_lower) for al in aliases):
+            detected_orgs.append(org_key)
+
+    # 3. Detect Specific Action & Predicate Tokens
+    action_tokens = []
+    for act in ["expansion", "expansion plans", "gives up", "give up", "backlash", "protest",
+                "cancelled", "cancel", "abandoned", "shelved", "halted", "delayed", "phase 2", "phase ii"]:
+        if act in claim_lower:
+            action_tokens.append(act)
+
+    return {
+        "claim": claim_text,
+        "locations": detected_locations,
+        "organizations": detected_orgs,
+        "actions": action_tokens,
+        "has_strict_location": len(detected_locations) > 0,
+        "has_strict_org": len(detected_orgs) > 0
+    }
+
+
+def compute_composite_relevance(claim_decomp: dict, article: dict, semantic_sim: float = 0.5) -> dict:
+    """
+    Evaluates every article against multi-dimensional matching components:
+    - Entity Match % (0 - 100%)
+    - Location Match % (0 - 100%)
+    - Event / Topic Match % (0 - 100%)
+    - Claim Alignment Match % (0 - 100%)
+    - Semantic Similarity % (0 - 100%)
+
+    Enforces the Hard Relevance Gate:
+    If an article fails Entity or Location consistency (e.g. Nanjing Metro, Namma Metro,
+    Toronto subway for Chennai Metro claims), its Claim Relevance is immediately dropped (< 10%)
+    and marked as FILTERED OUT. It is never used in Stance Analysis.
+    """
+    title = article.get("title", "")
+    content = article.get("content", "")
+    text = f"{title} {content}".lower()
+
+    entity_match = 0
+    location_match = 0
+    event_match = 0
+    claim_match = 0
+    semantic_pct = int(min(max(semantic_sim, 0.0), 1.0) * 100)
+
+    # 1. Location Matching
+    claim_locs = claim_decomp.get("locations", [])
+    if claim_decomp.get("has_strict_location"):
+        # Check if target location is present
+        has_claim_loc = any(
+            re.search(rf'\b{re.escape(al)}\b', text)
+            for cl in claim_locs
+            for al in MAJOR_LOCATIONS.get(cl, [cl])
+        )
+
+        # Check for conflicting other locations
+        conflicting_locs = []
+        for other_loc, aliases in MAJOR_LOCATIONS.items():
+            if other_loc not in claim_locs:
+                if "chennai" in claim_locs and other_loc == "tamil nadu":
+                    continue
+                if any(re.search(rf'\b{re.escape(al)}\b', text) for al in aliases):
+                    conflicting_locs.append(other_loc)
+
+        if has_claim_loc and not conflicting_locs:
+            location_match = 100
+        elif has_claim_loc and conflicting_locs:
+            location_match = 60
+        elif not has_claim_loc and conflicting_locs:
+            location_match = 0
+        else:
+            location_match = 20
+    else:
+        location_match = 75
+
+    # 2. Entity / System Matching
+    claim_orgs = claim_decomp.get("organizations", [])
+    if claim_decomp.get("has_strict_org"):
+        has_claim_org = any(
+            re.search(rf'\b{re.escape(al)}\b', text)
+            for org in claim_orgs
+            for al in MAJOR_ORGANIZATIONS_AND_SYSTEMS.get(org, [org])
+        )
+
+        conflicting_orgs = []
+        for other_org, aliases in MAJOR_ORGANIZATIONS_AND_SYSTEMS.items():
+            if other_org not in claim_orgs:
+                if any(re.search(rf'\b{re.escape(al)}\b', text) for al in aliases):
+                    conflicting_orgs.append(other_org)
+
+        if has_claim_org and not conflicting_orgs:
+            entity_match = 100
+        elif has_claim_org and conflicting_orgs:
+            entity_match = 50
+        elif not has_claim_org and conflicting_orgs:
+            entity_match = 0
+        else:
+            entity_match = 15
+    else:
+        entity_match = 70
+
+    # 3. Event / Topic Matching (Expansion, Phase II, Infrastructure)
+    event_tokens = claim_decomp.get("actions", [])
+    matched_events = sum(1 for tok in event_tokens if tok in text)
+    if any(w in text for w in ["expansion", "phase 2", "phase ii", "corridor", "tunneling", "116 km"]):
+        event_match = 100 if matched_events >= 1 else 80
+    elif any(w in text for w in ["metro line", "subway", "train services", "railway"]):
+        event_match = 40
+    else:
+        event_match = 10
+
+    # 4. Claim Alignment Matching (Specifically addresses the rumor of abandonment/cancellation/backlash)
+    if any(m in text for m in ["viral claim", "fact check", "gives up", "abandoned", "shelved", "public backlash", "denies rumor", "no cancellation"]):
+        claim_match = 100
+    elif any(m in text for m in ["protest", "opposition", "controversy", "alignment change"]):
+        claim_match = 60
+    elif event_match >= 80:
+        claim_match = 40
+    else:
+        claim_match = 10
+
+    # ─── HARD RELEVANCE GATE ──────────────────────────────────────────────────
+    # If the claim specifies a strict entity or location, and the article is about
+    # a completely different city or metro system (e.g. Nanjing, Namma Metro, Toronto):
+    is_hard_mismatch = False
+    rejection_reason = ""
+
+    if claim_decomp.get("has_strict_location") and location_match == 0:
+        is_hard_mismatch = True
+        rejection_reason = "Location Mismatch: Different city/geographic entity"
+
+    if claim_decomp.get("has_strict_org") and entity_match == 0:
+        is_hard_mismatch = True
+        rejection_reason = "Entity Mismatch: Different transit/organizational system"
+
+    if is_hard_mismatch:
+        final_rel = round(max(0.04, min(semantic_sim * 0.08, 0.08)), 3)
+        return {
+            "entity_match": entity_match,
+            "location_match": location_match,
+            "event_match": event_match,
+            "claim_match": claim_match,
+            "semantic_match": semantic_pct,
+            "relevance_score": final_rel,
+            "status": "FILTERED OUT",
+            "reason": rejection_reason,
+            "stance": "NOT_APPLICABLE",
+            "is_retained": False
+        }
+
+    # ─── COMPOSITE RELEVANCE CALCULATION ──────────────────────────────────────
+    # Weights: Entity (35%), Location (25%), Event (20%), Claim (10%), Semantic (10%)
+    composite_raw = (
+        0.35 * (entity_match / 100.0) +
+        0.25 * (location_match / 100.0) +
+        0.20 * (event_match / 100.0) +
+        0.10 * (claim_match / 100.0) +
+        0.10 * (semantic_sim)
+    )
+
+    final_rel = round(min(max(composite_raw, 0.05), 0.98), 3)
+    is_retained = (final_rel >= 0.50 and entity_match >= 50 and location_match >= 50)
+
+    # Determine Stance ONLY for Retained Articles
+    if is_retained:
+        if any(m in text for m in ["fact check", "false", "fake", "denies rumor", "actively progressing", "breakthrough", "on track", "sanctions"]):
+            stance = "CONTRADICTS CLAIM"
+        elif any(m in text for m in ["officially cancelled", "gives up", "shelved indefinitely"]):
+            stance = "SUPPORTS CLAIM"
+        else:
+            stance = "NEUTRAL BACKGROUND"
+        status = "RETAINED"
+        reason = "Entity and Location Grounded"
+    else:
+        stance = "NOT_APPLICABLE"
+        status = "FILTERED OUT"
+        reason = "Low Claim Alignment / Generic Background"
+
+    return {
+        "entity_match": entity_match,
+        "location_match": location_match,
+        "event_match": event_match,
+        "claim_match": claim_match,
+        "semantic_match": semantic_pct,
+        "relevance_score": final_rel,
+        "status": status,
+        "reason": reason,
+        "stance": stance,
+        "is_retained": is_retained
+    }
+
+
+def filter_evidence_by_entity_consistency(claim_text: str, raw_articles: list, max_articles: int = 15) -> list:
+    """
+    Hard Relevance Gate:
+    Filters candidates BEFORE semantic scoring and stance classification.
+    Only allows articles that pass Entity + Location + Topic consistency.
+    Does NOT force returning 15 articles; returns only valid matching evidence (capped at max_articles).
+    """
+    if not raw_articles:
+        return []
+
+    decomp = decompose_claim(claim_text)
+    
+    # If the claim has no strict location or org, return up to max_articles
+    if not decomp["has_strict_location"] and not decomp["has_strict_org"]:
+        return raw_articles[:max_articles]
+
+    valid_articles = []
+
+    for art in raw_articles:
+        comp = compute_composite_relevance(decomp, art, semantic_sim=art.get("similarity_score", 0.5))
+        art_copy = dict(art)
+        art_copy.update({
+            "entity_match": comp["entity_match"],
+            "location_match": comp["location_match"],
+            "event_match": comp["event_match"],
+            "claim_match": comp["claim_match"],
+            "semantic_match": comp["semantic_match"],
+            "relevance_score": comp["relevance_score"],
+            "status": comp["status"],
+            "consistency_check_reason": comp["reason"],
+            "stance": comp["stance"],
+            "entity_role_status": f"{comp['status']}: {comp['reason']}" if not comp["is_retained"] else f"{comp['stance']}: {comp['reason']}"
+        })
+
+        if comp["is_retained"]:
+            valid_articles.append(art_copy)
+
+    # 15 is maximum evidence bound, not mandatory quota:
+    # If 5 genuinely pass, return 5!
+    return valid_articles[:max_articles]

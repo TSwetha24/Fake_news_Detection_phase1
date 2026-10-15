@@ -13,7 +13,21 @@
             </label>
             <textarea id="hero-claim-input" class="claim-textarea" rows="2" placeholder="Enter news article headline or claim..." required></textarea>
             
-            <div style="display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div class="benchmark-chips-row">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Benchmark Claims:</span>
+
+                    <button type="button" class="benchmark-chip" onclick="runSample('NASA\'s James Webb Space Telescope discovers water vapor on distant exoplanet')">NASA Webb Exoplanet</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('Global renewable energy capacity grew by a record 50% in 2023, report finds')">Renewable Energy</button>
+                    <button type="button" class="benchmark-chip" onclick="runSample('5G cell towers confirmed to cause memory loss and battery drain in humans')">5G Health Rumor</button>
+                </div>
+
+                <button type="submit" class="btn btn-emerald btn-lg">
+                    Verify Claim Across All Modules
+                </button>
+            </div>
+
+                
                 <button type="submit" class="btn btn-emerald btn-lg">
                     Verify Claim Across All Modules
                 </button>

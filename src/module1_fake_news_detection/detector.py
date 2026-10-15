@@ -43,18 +43,45 @@ class FakeNewsDetector:
             self._train_fallback_classifier()
 
     def _train_fallback_classifier(self):
-        """Train TF-IDF + Softmax Logistic Regression model on Fakeddit dataset as fallback."""
+        """Load pre-trained or train TF-IDF + Softmax model on 60k Fakeddit dataset as fallback."""
+        import pickle
         from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.linear_model import LogisticRegression
         
+        # 1. Try loading enhanced 83.47% dual-feature union model
+        enh_union_path = os.path.join(config.MODEL_DIR, "enhanced_union_60k.pkl")
+        enh_clf_path = os.path.join(config.MODEL_DIR, "enhanced_clf_60k.pkl")
+        if os.path.exists(enh_union_path) and os.path.exists(enh_clf_path):
+            try:
+                with open(enh_union_path, "rb") as f:
+                    self.tfidf_vectorizer = pickle.load(f)
+                with open(enh_clf_path, "rb") as f:
+                    self.fallback_classifier = pickle.load(f)
+                return
+            except Exception:
+                pass
+
+        # 2. Try loading standard 60k model
+        vec_path = os.path.join(config.MODEL_DIR, "tfidf_60k.pkl")
+        clf_path = os.path.join(config.MODEL_DIR, "classifier_60k.pkl")
+        if os.path.exists(vec_path) and os.path.exists(clf_path):
+            try:
+                with open(vec_path, "rb") as f:
+                    self.tfidf_vectorizer = pickle.load(f)
+                with open(clf_path, "rb") as f:
+                    self.fallback_classifier = pickle.load(f)
+                return
+            except Exception:
+                pass
+                
         df = load_fakeddit_dataset()
-        titles = df['clean_title'].values
-        labels = df['label_name'].values
+        titles = df['clean_title'].astype(str).tolist()
+        labels = df['label_name'].astype(str).tolist()
         
-        self.tfidf_vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2), stop_words='english')
+        self.tfidf_vectorizer = TfidfVectorizer(max_features=15000, ngram_range=(1, 2), stop_words='english', sublinear_tf=True)
         X = self.tfidf_vectorizer.fit_transform(titles)
         
-        self.fallback_classifier = LogisticRegression(max_iter=1000)
+        self.fallback_classifier = LogisticRegression(max_iter=1000, C=1.5, solver='lbfgs')
         self.fallback_classifier.fit(X, labels)
 
     def predict(self, claim_text: str):
