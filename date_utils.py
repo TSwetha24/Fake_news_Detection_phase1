@@ -6,8 +6,8 @@ def extract_target_dates(claim_text: str, reference_date: datetime.date = None):
     Extracts target dates and relative day references ('tomorrow', 'today', '14/8/2026') from text.
     """
     if reference_date is None:
-        # Current system date: 2026-08-13
-        reference_date = datetime.date(2026, 8, 13)
+        from src.patches import get_reference_date
+        reference_date = get_reference_date(reference_date)
 
     claim_lower = claim_text.lower()
     target_date = None
@@ -61,12 +61,17 @@ def extract_target_dates(claim_text: str, reference_date: datetime.date = None):
     readable_str = target_date.strftime("%d %B %Y").lower()
     readable_alt = target_date.strftime("%B %d, %Y").lower()
 
-    # Strict date patterns MUST include the year or exact 14/8/2026 representation
+    month_name_lower = target_date.strftime("%B").lower()
+    # Dynamic date patterns using the actual parsed date
     strict_date_strings = [
         iso_str, dmy_str, dmy_short, readable_str, readable_alt,
-        f"{target_date.day}/{target_date.month}/2026",
-        f"{target_date.day} august 2026"
+        f"{target_date.day}/{target_date.month}/{target_date.year}",
+        f"{target_date.day} {month_name_lower} {target_date.year}"
     ]
+
+    is_today = (target_date == reference_date)
+    is_future = (target_date > reference_date)
+    is_past = (target_date < reference_date)
 
     return {
         "target_date_obj": target_date,
@@ -74,5 +79,9 @@ def extract_target_dates(claim_text: str, reference_date: datetime.date = None):
         "target_date_str_dmy": dmy_str,
         "target_date_str_readable": target_date.strftime("%d %B %Y"),
         "is_date_specific_claim": True,
-        "strict_date_strings": strict_date_strings
+        "strict_date_strings": strict_date_strings,
+        "is_today": is_today,
+        "is_future": is_future,
+        "is_past": is_past,
+        "is_future_or_today": is_future or is_today
     }

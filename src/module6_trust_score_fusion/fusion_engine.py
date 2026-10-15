@@ -1,5 +1,6 @@
 import math
 from typing import Dict, Any
+import config
 
 class TrustScoreFusionEngine:
     """
@@ -101,20 +102,32 @@ class TrustScoreFusionEngine:
         )
 
         if is_directly_contradicted or is_gate_unsupported:
-            final_trust_score_pct = round(min(linear_weighted_trust * 100, 24.0), 2)
-            if is_gate_unsupported:
-                final_verdict = "Unsupported"
-                verdict_rationale = (
-                    f"Unsupported / Likely False: No authoritative evidence found that supports this claim. "
-                    f"{contradiction_reason or 'Evidence retrieval returned no claim-relevant corroboration.'} "
-                    f"This does NOT mean the claim is directly contradicted — it means it cannot be verified."
-                )
+            from src.patches import evaluate_breaking_news_verdict
+            breaking_res = evaluate_breaking_news_verdict(
+                c2=c2,
+                is_unsupported_evidence=is_gate_unsupported,
+                is_directly_contradicted=is_directly_contradicted,
+                linear_weighted_trust=linear_weighted_trust,
+                contradiction_reason=contradiction_reason
+            )
+            if breaking_res is not None:
+                final_trust_score_pct, final_verdict, verdict_rationale = breaking_res
             else:
-                final_verdict = "Fake"
-                verdict_rationale = (
-                    f"Contradiction Safety Gate triggered: "
-                    f"{contradiction_reason or 'Definitive contradiction detected in evidence or agent reasoning.'}"
-                )
+                from src.patches import compute_gate_score
+                final_trust_score_pct = compute_gate_score(linear_weighted_trust, cap=24.0)
+                if is_gate_unsupported and not getattr(config, "ENABLE_TWO_VERDICTS_ONLY", False):
+                    final_verdict = "Unsupported"
+                    verdict_rationale = (
+                        f"Unsupported / Likely False: No authoritative evidence found that supports this claim. "
+                        f"{contradiction_reason or 'Evidence retrieval returned no claim-relevant corroboration.'} "
+                        f"This does NOT mean the claim is directly contradicted — it means it cannot be verified."
+                    )
+                else:
+                    final_verdict = "Fake"
+                    verdict_rationale = (
+                        f"Contradiction Safety Gate triggered: "
+                        f"{contradiction_reason or 'Definitive contradiction detected in evidence or agent reasoning.'}"
+                    )
         else:
             # Strictly use the Multi-Module Linear Weighted Score Formula:
             # Trust Score = 0.15*C1 + 0.30*C2 + 0.15*C3 + 0.25*C4 + 0.15*C5
@@ -127,8 +140,13 @@ class TrustScoreFusionEngine:
                 final_verdict = "Fake"
                 verdict_rationale = "Low multi-module trust: Inadequate evidence support, high contradiction probability, or low source verification."
             else:
-                final_verdict = "Unverified"
-                verdict_rationale = "Inconclusive multi-module fusion: Score falls within the uncertainty interval (40% - 60%). Further authoritative corroboration required."
+                if getattr(config, "ENABLE_TWO_VERDICTS_ONLY", False):
+                    final_verdict = "Real" if final_trust_score_pct >= 50.0 else "Fake"
+                    verdict_rationale = "Multi-signal synthesis compiled across linguistic analysis, live cross-source evidence, story clustering, domain credibility, and agentic decision."
+                else:
+                    final_verdict = "Unverified"
+                    verdict_rationale = "Inconclusive multi-module fusion: Score falls within the uncertainty interval (40% - 60%). Further authoritative corroboration required."
+
 
         # Mathematical Formula Breakdown for UI Explainer
         formula_breakdown = {
@@ -143,12 +161,16 @@ class TrustScoreFusionEngine:
             "linear_weighted_sum": round(linear_weighted_trust * 100, 2),
             "logistic_logit_z": round(z, 3),
             "logistic_calibrated_probability_pct": round(logistic_calibrated_prob * 100, 2),
-            "final_fused_score_pct": final_trust_score_pct
+            "final_fused_score_pct": final_trust_score_pct,
+            "p_real": final_trust_score_pct,
+            "p_fake": round(100.0 - final_trust_score_pct, 2)
         }
 
         return {
             "module_name": "Module 6: Trust Score Fusion",
             "final_trust_score": final_trust_score_pct,
+            "p_real": final_trust_score_pct,
+            "p_fake": round(100.0 - final_trust_score_pct, 2),
             "final_verdict": final_verdict,
             "verdict_rationale": verdict_rationale,
             "is_contradiction_active": is_contradiction_detected,

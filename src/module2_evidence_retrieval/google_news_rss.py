@@ -25,8 +25,11 @@ class GoogleNewsRSSRetriever:
         all_results = []
         seen_links = set()
 
-        # Use the full claim as primary query; add a shorter version as fallback
-        queries_to_run = [query]
+        from src.patches import build_recency_query
+        q_recency = build_recency_query(query, "google_news")
+        queries_to_run = [q_recency] if q_recency != query else [query]
+        if query not in queries_to_run:
+            queries_to_run.append(query)
         # Also try a condensed version (first 8 words) as fallback for long claims
         words = query.split()
         if len(words) > 6:
@@ -41,6 +44,9 @@ class GoogleNewsRSSRetriever:
 
             try:
                 resp = requests.get(url, headers=self.headers, verify=False, timeout=2.5)
+                import os
+                if os.getenv("DEBUG_TRACE"):
+                    print(f"[DEBUG_TRACE] Google News HTTP: {resp.status_code}")
                 if resp.status_code == 200:
                     root = ET.fromstring(resp.content)
                     items = root.findall('.//item')

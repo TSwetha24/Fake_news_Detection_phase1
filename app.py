@@ -1,6 +1,16 @@
+import sys
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 from flask import Flask, render_template, request, jsonify, send_file
 import io
+import os
 import config
+
 from pipeline import ClaimVerificationPipeline
 from src.blockchain import Blockchain
 from src.module4_agentic_verification.pdf_generator import generate_pdf_report_bytes
@@ -59,19 +69,34 @@ def verify_claim():
         # Step 1: Check Blockchain for previous verification record
         if not force_reverify:
             existing = blockchain.find_claim(claim_text)
+            if os.getenv("DEBUG_TRACE"):
+                from src.blockchain import Block
+                c_hash = Block.hash_claim(claim_text)
+                hit_info = f"Hit (Block #{existing[0].index})" if existing else "Miss"
+                print(f"[DEBUG_TRACE] Claim: '{claim_text}' | Hash: {c_hash} | Cache: {hit_info}")
             if existing:
                 block, cached_results = existing
+                cached_results["cache_hit"] = True
+                if "blockchain_info" in cached_results:
+                    cached_results["blockchain_info"]["cache_hit"] = True
+                    cached_results["blockchain_info"]["is_cached_in_blockchain"] = True
                 print(f"Blockchain Cache Hit for claim '{claim_text[:30]}...' -> Block #{block.index}")
                 return jsonify(cached_results)
+        elif os.getenv("DEBUG_TRACE"):
+            from src.blockchain import Block
+            c_hash = Block.hash_claim(claim_text)
+            print(f"[DEBUG_TRACE] Claim: '{claim_text}' | Hash: {c_hash} | Cache: Bypassed (force_reverify=True)")
 
         # Step 2: Run full verification pipeline if not found in blockchain or force_reverify is requested
         print(f"Running full verification pipeline for claim '{claim_text[:30]}...'")
         results = pipeline.process_claim(claim_text, target_evidence_count=15)
+        results["cache_hit"] = False
 
         # Step 3: Mine and append new block to Blockchain
         new_block = blockchain.add_claim_block(claim_text, results)
         results["blockchain_info"] = {
             "is_cached_in_blockchain": False,
+            "cache_hit": False,
             "just_mined": True,
             "block_index": new_block.index,
             "block_hash": new_block.hash,
@@ -82,6 +107,8 @@ def verify_claim():
         return jsonify(results)
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Error processing claim: {e}")
         return jsonify({"error": str(e)}), 500
 

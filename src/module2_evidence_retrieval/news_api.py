@@ -25,16 +25,23 @@ class NewsAPIRetriever:
             return []
 
         try:
+            sort_val = "publishedAt" if getattr(config, "ENABLE_RECENCY_RETRIEVAL_PATCH", True) else "relevance"
+            import datetime
+            from_date = (datetime.datetime.utcnow() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
             params = {
                 "q": query,
                 "pageSize": pageSize,
-                "sortBy": "relevance",
+                "sortBy": sort_val,
+                "from": from_date,
                 "language": "en",
                 "apiKey": self.api_key
             }
             res = requests.get(
                 self.endpoint, params=params, verify=False, timeout=6
             )
+            import os
+            if os.getenv("DEBUG_TRACE"):
+                print(f"[DEBUG_TRACE] NewsAPI HTTP: {res.status_code}")
             if res.status_code == 200:
                 data = res.json()
                 articles_raw = data.get("articles", [])

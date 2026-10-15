@@ -63,9 +63,17 @@ function updateActiveClaimBar() {
         bar.classList.remove("hidden");
         claimTextSpan.textContent = `"${data.claim}"`;
         
-        const isReal = (data.final_verdict || "").toUpperCase() === "REAL";
-        verdictBadge.textContent = isReal ? "REAL" : "FAKE";
-        verdictBadge.className = `badge-verdict ${isReal ? "verdict-real" : "verdict-fake"}`;
+        const vUpper = (data.final_verdict || "").toUpperCase();
+        if (vUpper === "REAL") {
+            verdictBadge.textContent = "REAL";
+            verdictBadge.className = "badge-verdict verdict-real";
+        } else if (vUpper === "UNVERIFIED" || (data.badge_label && data.badge_label.includes("Unverified"))) {
+            verdictBadge.textContent = "UNVERIFIED";
+            verdictBadge.className = "badge-verdict badge-amber";
+        } else {
+            verdictBadge.textContent = "FAKE";
+            verdictBadge.className = "badge-verdict verdict-fake";
+        }
     } else {
         bar.classList.add("hidden");
     }
@@ -177,22 +185,14 @@ function classifyArticles(articles, isRealVerdict) {
     const related = [];
 
     articles.forEach((art, idx) => {
-        let stance = (art.stance || art.support_type || "").toUpperCase();
+        let stance = (art.stance || art.support_type || art.entity_role_status || "").toUpperCase();
 
         if (stance.includes("SUPPORT")) {
             supporting.push(art);
         } else if (stance.includes("REFUTE") || stance.includes("CONTRADICT")) {
             contradicting.push(art);
         } else {
-            // Exactly 2 key direct evidence items placed under Supporting / Contradicting
-            // Remaining articles (e.g., 13 out of 15) placed under Related Articles
-            if (idx < 2) {
-                if (isRealVerdict === true) supporting.push(art);
-                else if (isRealVerdict === false) contradicting.push(art);
-                else related.push(art);
-            } else {
-                related.push(art);
-            }
+            related.push(art);
         }
     });
 
@@ -205,22 +205,39 @@ function renderOverviewView(data) {
 
     resultView.classList.remove("hidden");
 
-    const isReal = (data.final_verdict || "").toUpperCase() === "REAL";
+    const verdictStr = (data.final_verdict || "").toUpperCase();
+    const isReal = verdictStr === "REAL";
+    const isUnverified = verdictStr === "UNVERIFIED" || (data.badge_label && data.badge_label.includes("Unverified"));
     const verdictBadge = document.getElementById("verdict-badge");
     const verdictBanner = document.getElementById("verdict-banner");
     
     if (verdictBadge) {
-        verdictBadge.textContent = isReal ? "VERIFIED REAL" : "CONTRADICTED FAKE";
-        verdictBadge.className = `badge-verdict ${isReal ? "verdict-real" : "verdict-fake"}`;
+        if (isReal) {
+            verdictBadge.textContent = "VERIFIED REAL";
+            verdictBadge.className = "badge-verdict verdict-real";
+        } else if (isUnverified) {
+            verdictBadge.textContent = (data.badge_label || "UNVERIFIED").toUpperCase();
+            verdictBadge.className = "badge-verdict badge-amber";
+        } else {
+            verdictBadge.textContent = "CONTRADICTED FAKE";
+            verdictBadge.className = "badge-verdict verdict-fake";
+        }
     }
     if (verdictBanner) {
-        verdictBanner.className = `verdict-banner ${isReal ? "" : "fake-banner"}`;
+        if (isReal) {
+            verdictBanner.className = "verdict-banner";
+        } else if (isUnverified) {
+            verdictBanner.className = "verdict-banner amber-banner";
+        } else {
+            verdictBanner.className = "verdict-banner fake-banner";
+        }
     }
 
-    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : 24.0);
+    const trustReal = (data.preliminary_trust_score !== undefined ? data.preliminary_trust_score : (isReal ? 75.0 : 24.0));
     const trustFake = (100 - trustReal);
 
-    document.getElementById("trust-score-sub").textContent = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real`;
+    const sourcesSummary = (data.module2_retrieval && data.module2_retrieval.sources_responded_summary) ? ` • ${data.module2_retrieval.sources_responded_summary}` : "";
+    document.getElementById("trust-score-sub").textContent = `${trustFake.toFixed(2)}% Fake | ${trustReal.toFixed(2)}% Real${sourcesSummary}`;
     document.getElementById("verdict-rationale").textContent = data.verdict_rationale || "Multi-signal synthesis compiled across linguistic analysis, live cross-source evidence, story clustering, domain credibility, and agentic decision.";
     
     // Blockchain Proof Card Handling
@@ -407,7 +424,8 @@ function renderMod2View(data) {
 
     container.innerHTML = annotatedList.map(item => {
         const art = item.art;
-        const relPct = Math.round((art.similarity_score || 0.92) * 100);
+        const rawRel = (art.relevance_score !== undefined ? art.relevance_score : (art.claim_similarity !== undefined ? art.claim_similarity : 0.50));
+        const relPct = Math.round(rawRel * 100);
         const sourceUrl = art.url || `https://news.google.com/search?q=${encodeURIComponent(art.title || data.claim || '')}`;
 
         return `

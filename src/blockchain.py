@@ -198,16 +198,20 @@ class Blockchain:
         best_match_score = 0.0
 
         for block in reversed(self.chain[1:]):
-            # 1. Exact string or hash match
+            from src.patches import is_strict_cache_match
+            # 1. Exact string or hash match with TTL validation
             if block.claim_hash == search_hash or block.claim.strip().lower() == search_normalized:
-                best_match_block = block
-                best_match_score = 1.0
-                break
+                is_valid, exact_score = is_strict_cache_match(claim_text, block, sim_score=1.0)
+                if is_valid:
+                    best_match_block = block
+                    best_match_score = exact_score
+                    break
 
-            # 2. Semantic similarity match for rephrased claims
+            # 2. Semantic similarity match for rephrased claims with entity and TTL checks
             sim = self.compute_semantic_similarity(claim_text, block.claim)
-            if sim > best_match_score:
-                best_match_score = sim
+            is_valid, matched_score = is_strict_cache_match(claim_text, block, sim_score=sim, similarity_threshold=similarity_threshold)
+            if is_valid and matched_score > best_match_score:
+                best_match_score = matched_score
                 best_match_block = block
 
         if best_match_block and best_match_score >= similarity_threshold:
@@ -232,6 +236,8 @@ class Blockchain:
         latest_block = self.get_latest_block()
         verdict = verification_result.get("final_verdict", "UNKNOWN")
         timestamp = datetime.datetime.utcnow().isoformat() + "Z"
+        import config
+        verification_result["pipeline_version"] = getattr(config, "PIPELINE_VERSION", "2.0.0")
 
         new_block = Block(
             index=len(self.chain),

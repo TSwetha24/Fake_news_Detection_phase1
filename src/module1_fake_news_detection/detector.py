@@ -94,7 +94,8 @@ class FakeNewsDetector:
                     "model_used": "RoBERTa Transformer (Fine-Tuned Softmax Classifier)"
                 }
             except Exception as e:
-                pass
+                from src.patches import log_exception
+                log_exception("Module 1 RoBERTa Predict", e)
 
         # Fallback Scikit-Learn Softmax Classifier
         if self.fallback_classifier is None:
@@ -122,10 +123,10 @@ class FakeNewsDetector:
             pred_label = max(probs_dict, key=probs_dict.get)
             confidence = probs_dict[pred_label]
             if confidence < 0.60:
-                # Standard news headline format
-                probs_dict = {"Real": 0.72, "Fake": 0.15, "Unverified": 0.13}
-                pred_label = "Real"
-                confidence = 0.72
+                from src.patches import sanitize_module1_fallback
+                pred_label, confidence, probs_dict = sanitize_module1_fallback(
+                    claim_text, probs_dict, "Real", 0.72
+                )
             
         return {
             "claim": claim_text,

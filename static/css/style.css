@@ -523,6 +523,9 @@ a:hover {
 .verdict-banner.fake-banner {
     border-left-color: var(--color-crimson);
 }
+.verdict-banner.amber-banner {
+    border-left-color: var(--color-amber);
+}
 .verdict-label {
     font-family: var(--font-mono);
     font-size: 11px;

@@ -28,6 +28,9 @@ class WikipediaAPIRetriever:
         
         try:
             resp = requests.get(self.api_url, params=params, headers=self.headers, verify=False, timeout=2.5)
+            import os
+            if os.getenv("DEBUG_TRACE"):
+                print(f"[DEBUG_TRACE] Wikipedia HTTP: {resp.status_code}")
             if resp.status_code == 200:
                 data = resp.json()
                 items = data.get("query", {}).get("search", [])

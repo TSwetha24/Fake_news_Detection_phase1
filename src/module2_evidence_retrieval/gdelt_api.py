@@ -27,11 +27,16 @@ class GDELTNewsRetriever:
             "format": "json",
             "sort": "DateDesc"
         }
+        if getattr(config, "ENABLE_RECENCY_RETRIEVAL_PATCH", True):
+            params["timespan"] = "7d"
 
         try:
             response = requests.get(
-                self.api_url, params=params, verify=False, timeout=2.5
+                self.api_url, params=params, verify=False, timeout=4.5
             )
+            import os
+            if os.getenv("DEBUG_TRACE"):
+                print(f"[DEBUG_TRACE] GDELT HTTP: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
                 articles_raw = data.get("articles", [])

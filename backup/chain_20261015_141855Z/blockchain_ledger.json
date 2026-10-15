@@ -1,0 +1,964 @@
+[
+  {
+    "index": 0,
+    "timestamp": "2026-01-01T00:00:00Z",
+    "claim": "TRUTHCHAIN GENESIS BLOCK",
+    "claim_hash": "d0fdccd904362069d5ec3ae24a1d2570426724af1170a2684380ffe1f785b54d",
+    "verdict": "GENESIS",
+    "verification_data": {
+      "final_verdict": "GENESIS",
+      "preliminary_trust_score": 100,
+      "verdict_rationale": "Genesis Block for TruthChain Fake News Verification Ledger."
+    },
+    "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "nonce": 9,
+    "hash": "0005fae7c3cd7462432141a3582221c0cdd3ea89aa043afe3f10ffa2e63e1418"
+  },
+  {
+    "index": 1,
+    "timestamp": "2026-10-15T13:56:36.128462Z",
+    "claim": "cm vijay to arrive in coimbatore on 16th August",
+    "claim_hash": "fcf895f2c015bc767fd1bb2a9f3ac721668f3c825ba300852fca1b422363c23b",
+    "verdict": "Fake",
+    "verification_data": {
+      "claim": "cm vijay to arrive in coimbatore on 16th August",
+      "execution_time_seconds": 9.87,
+      "preliminary_trust_score": 24.0,
+      "final_verdict": "Fake",
+      "verdict_rationale": "Contradiction Safety Gate triggered: Fake Rain Holiday Hoax: 0 official news reports confirm holiday for target date (16 August 2026)",
+      "fusion_breakdown": {
+        "formula_latex": "\\text{Trust Score} = (0.15 \\cdot C_1) + (0.30 \\cdot C_2) + (0.15 \\cdot C_3) + (0.25 \\cdot C_4) + (0.15 \\cdot C_5)",
+        "terms": [
+          {
+            "module": "Module 1: Content Style",
+            "symbol": "C_1",
+            "weight": 0.15,
+            "confidence": 0.6312,
+            "weighted_value": 0.0947
+          },
+          {
+            "module": "Module 2: Evidence Support",
+            "symbol": "C_2",
+            "weight": 0.3,
+            "confidence": 0.05,
+            "weighted_value": 0.015
+          },
+          {
+            "module": "Module 3: Source Independence",
+            "symbol": "C_3",
+            "weight": 0.15,
+            "confidence": 0.375,
+            "weighted_value": 0.0562
+          },
+          {
+            "module": "Module 4: Agentic Verification",
+            "symbol": "C_4",
+            "weight": 0.25,
+            "confidence": 0.86,
+            "weighted_value": 0.215
+          },
+          {
+            "module": "Module 5: Source Credibility",
+            "symbol": "C_5",
+            "weight": 0.15,
+            "confidence": 0.9036,
+            "weighted_value": 0.1355
+          }
+        ],
+        "linear_weighted_sum": 51.65,
+        "logistic_logit_z": 1.32,
+        "logistic_calibrated_probability_pct": 78.91,
+        "final_fused_score_pct": 24.0
+      },
+      "module_confidence_scores": {
+        "module1_content_confidence": 0.6312,
+        "module2_evidence_confidence": 0.05,
+        "module3_independence_confidence": 0.375,
+        "module4_agentic_confidence": 0.86,
+        "module5_credibility_confidence": 0.9036
+      },
+      "module1_detection": {
+        "claim": "cm vijay to arrive in coimbatore on 16th August",
+        "label": "Unverified",
+        "confidence_score": 0.3688,
+        "probabilities": {
+          "Real": 0.313,
+          "Fake": 0.3182,
+          "Unverified": 0.3688
+        },
+        "model_used": "RoBERTa Transformer (Fine-Tuned Softmax Classifier)"
+      },
+      "module2_retrieval": {
+        "claim": "cm vijay to arrive in coimbatore on 16th August",
+        "total_articles_retrieved": 8,
+        "evidence_items": [
+          {
+            "title": "Wikipedia Entry: Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/?curid=29918",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Encyclopedic factual reference for 'Tamil Nadu': started to establish trade centres from the 16th century along the eastern coast. The Portuguese arrived in 1522 and built a port named S\u00e3o Tom\u00e9 near",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.64,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0372,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "Wikipedia Entry: Christianity in Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/?curid=26260439",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Encyclopedic factual reference for 'Christianity in Tamil Nadu': the Church of South India with eight dioceses in Tamil Nadu. They are Coimbatore Diocese, Kanyakumari Diocese, Madras Diocese, Madurai-Ramnad Diocese,",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.52,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0236,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "Wikipedia Entry: 2008 Mumbai attacks",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/?curid=20413485",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Encyclopedic factual reference for '2008 Mumbai attacks': quits as Maharashtra CM&quot;. India Today. Archived from the original on 22 August 2019. Retrieved 31 December 2010. &quot;Maharashtra Deputy CM RR Patil resigns&quot;",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.52,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0652,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+            "domain": "thehindu.com",
+            "url": "https://www.thehindu.com/news/national/tamil-nadu/",
+            "publish_date": "2026-08-01",
+            "source": "The Hindu",
+            "content": "Chief Minister of Tamil Nadu Vijay conducted extensive public outreach meetings across Tamil Nadu districts to review welfare scheme implementation.",
+            "retrieval_method": "Google News RSS API",
+            "rank_score": 0.52,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0284,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+            "domain": "timesofindia.indiatimes.com",
+            "url": "https://timesofindia.indiatimes.com/city/chennai/",
+            "publish_date": "2026-08-05",
+            "source": "Times of India",
+            "content": "Chief Minister Vijay's government approved the withdrawal of cases filed against protesting farmers and government teachers, fulfilling a key TVK election promise.",
+            "retrieval_method": "Google News RSS API",
+            "rank_score": 0.52,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0869,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "Wikipedia Entry: Vijay (Chief Minister of Tamil Nadu since June 2026)",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/wiki/Vijay_(actor)",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Joseph Vijay became the Chief Minister of Tamil Nadu on June 5, 2026, after leading TVK to victory in the state assembly elections.",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.52,
+            "relevance_score": 0.15,
+            "claim_similarity": 0.0333,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Date Mismatch / Past Archive"
+          },
+          {
+            "title": "Wikipedia Entry: Terrorism in India",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/?curid=1916193",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Encyclopedic factual reference for 'Terrorism in India': Times (28 November 2008) Singh, Vijay (14 March 2003). &quot;Blast in Mumbai train, 10 killed&quot;. Rediff. Retrieved 1 August 2025. Rashid, Atikh (15 April 2013)",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.64,
+            "relevance_score": 0.05,
+            "claim_similarity": 0.0378,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Outdated Past Event (Invalid for Target Date)"
+          },
+          {
+            "title": "Wikipedia Entry: K. Annamalai (BJP politician)",
+            "domain": "en.wikipedia.org",
+            "url": "https://en.wikipedia.org/?curid=81817292",
+            "publish_date": "Verified Reference",
+            "source": "Wikipedia Knowledge Base",
+            "content": "Encyclopedic factual reference for 'K. Annamalai (BJP politician)': Assembly election from Aravakurichi and 2024 Lok Sabha election from Coimbatore. He formally resigned from BJP on 5 June 2026. Annamalai was born as Siva",
+            "retrieval_method": "Wikipedia Search API",
+            "rank_score": 0.52,
+            "relevance_score": 0.05,
+            "claim_similarity": 0.0232,
+            "entity_role_status": "General Evidence",
+            "date_match_status": "Outdated Past Event (Invalid for Target Date)"
+          }
+        ],
+        "backends_used": [
+          "Google News RSS",
+          "Wikipedia Search API",
+          "DuckDuckGo API",
+          "GDELT API v2",
+          "NewsAPI",
+          "BM25 Retrieval",
+          "Sentence-BERT Semantic Search"
+        ],
+        "evidence_support_score": 0.05,
+        "evidence_status": "Fake Rain Holiday Hoax: 0 official news reports confirm holiday for target date (16 August 2026)"
+      },
+      "module3_independence": {
+        "total_articles_analyzed": 8,
+        "independent_sources_count": 3,
+        "source_independence_score": 0.375,
+        "duplication_rate_percent": 62.5,
+        "cosine_threshold": 0.5,
+        "nodes": [
+          {
+            "id": 0,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/?curid=29918",
+            "publish_date": "Verified Reference"
+          },
+          {
+            "id": 1,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: Christianity in Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/?curid=26260439",
+            "publish_date": "Verified Reference"
+          },
+          {
+            "id": 2,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: 2008 Mumbai attacks",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/?curid=20413485",
+            "publish_date": "Verified Reference"
+          },
+          {
+            "id": 3,
+            "label": "thehindu.com",
+            "title": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+            "domain": "thehindu.com",
+            "source": "The Hindu",
+            "cluster_id": 1,
+            "url": "https://www.thehindu.com/news/national/tamil-nadu/",
+            "publish_date": "2026-08-01"
+          },
+          {
+            "id": 4,
+            "label": "timesofindia.indiatimes.com",
+            "title": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+            "domain": "timesofindia.indiatimes.com",
+            "source": "Times of India",
+            "cluster_id": 2,
+            "url": "https://timesofindia.indiatimes.com/city/chennai/",
+            "publish_date": "2026-08-05"
+          },
+          {
+            "id": 5,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: Vijay (Chief Minister of Tamil Nadu since June 2026)",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/wiki/Vijay_(actor)",
+            "publish_date": "Verified Reference"
+          },
+          {
+            "id": 6,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: Terrorism in India",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/?curid=1916193",
+            "publish_date": "Verified Reference"
+          },
+          {
+            "id": 7,
+            "label": "en.wikipedia.org",
+            "title": "Wikipedia Entry: K. Annamalai (BJP politician)",
+            "domain": "en.wikipedia.org",
+            "source": "Wikipedia Knowledge Base",
+            "cluster_id": 0,
+            "url": "https://en.wikipedia.org/?curid=81817292",
+            "publish_date": "Verified Reference"
+          }
+        ],
+        "edges": [
+          {
+            "source": 0,
+            "target": 1,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 0,
+            "target": 2,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 0,
+            "target": 5,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 0,
+            "target": 6,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 0,
+            "target": 7,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 1,
+            "target": 2,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 1,
+            "target": 5,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 1,
+            "target": 6,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 1,
+            "target": 7,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 2,
+            "target": 5,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 2,
+            "target": 6,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 2,
+            "target": 7,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 5,
+            "target": 6,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 5,
+            "target": 7,
+            "similarity": 0.88,
+            "cluster_id": 0
+          },
+          {
+            "source": 6,
+            "target": 7,
+            "similarity": 0.88,
+            "cluster_id": 0
+          }
+        ],
+        "pairwise_similarity_matrix": [
+          [
+            1.0,
+            0.88,
+            0.88,
+            0.127,
+            0.026,
+            0.88,
+            0.88,
+            0.88
+          ],
+          [
+            0.88,
+            1.0,
+            0.88,
+            0.141,
+            0.022,
+            0.88,
+            0.88,
+            0.88
+          ],
+          [
+            0.88,
+            0.88,
+            1.0,
+            0.003,
+            0.026,
+            0.88,
+            0.88,
+            0.88
+          ],
+          [
+            0.127,
+            0.141,
+            0.003,
+            1.0,
+            0.087,
+            0.395,
+            0.011,
+            0.0
+          ],
+          [
+            0.026,
+            0.022,
+            0.026,
+            0.087,
+            1.0,
+            0.118,
+            0.03,
+            0.03
+          ],
+          [
+            0.88,
+            0.88,
+            0.88,
+            0.395,
+            0.118,
+            1.0,
+            0.88,
+            0.88
+          ],
+          [
+            0.88,
+            0.88,
+            0.88,
+            0.011,
+            0.03,
+            0.88,
+            1.0,
+            0.88
+          ],
+          [
+            0.88,
+            0.88,
+            0.88,
+            0.0,
+            0.03,
+            0.88,
+            0.88,
+            1.0
+          ]
+        ],
+        "clusters": [
+          {
+            "cluster_id": 0,
+            "primary_headline": "Wikipedia Entry: Tamil Nadu",
+            "article_count": 6,
+            "domains_involved": [
+              "en.wikipedia.org"
+            ],
+            "is_syndicated": true,
+            "articles": [
+              {
+                "title": "Wikipedia Entry: Tamil Nadu",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=29918"
+              },
+              {
+                "title": "Wikipedia Entry: Christianity in Tamil Nadu",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=26260439"
+              },
+              {
+                "title": "Wikipedia Entry: 2008 Mumbai attacks",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=20413485"
+              },
+              {
+                "title": "Wikipedia Entry: Vijay (Chief Minister of Tamil Nadu since June 2026)",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/wiki/Vijay_(actor)"
+              },
+              {
+                "title": "Wikipedia Entry: Terrorism in India",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=1916193"
+              },
+              {
+                "title": "Wikipedia Entry: K. Annamalai (BJP politician)",
+                "source": "Wikipedia Knowledge Base",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=81817292"
+              }
+            ]
+          },
+          {
+            "cluster_id": 1,
+            "primary_headline": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+            "article_count": 1,
+            "domains_involved": [
+              "thehindu.com"
+            ],
+            "is_syndicated": false,
+            "articles": [
+              {
+                "title": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+                "source": "The Hindu",
+                "domain": "thehindu.com",
+                "url": "https://www.thehindu.com/news/national/tamil-nadu/"
+              }
+            ]
+          },
+          {
+            "cluster_id": 2,
+            "primary_headline": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+            "article_count": 1,
+            "domains_involved": [
+              "timesofindia.indiatimes.com"
+            ],
+            "is_syndicated": false,
+            "articles": [
+              {
+                "title": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+                "source": "Times of India",
+                "domain": "timesofindia.indiatimes.com",
+                "url": "https://timesofindia.indiatimes.com/city/chennai/"
+              }
+            ]
+          }
+        ]
+      },
+      "module4_agentic": {
+        "module_name": "Module 4: Agentic Verification",
+        "agent_verdict": "Real",
+        "agent_confidence_score": 0.86,
+        "execution_time_seconds": 0.021,
+        "tools_invoked_count": 7,
+        "tools_invoked": [
+          "medical_scientific_fact_checker",
+          "authority_attribution_checker",
+          "cross_domain_auditor",
+          "entity_fact_lookup",
+          "temporal_recency_checker",
+          "claim_decomposition_auditor",
+          "stance_entailment_analyzer"
+        ],
+        "reasoning_trace": [
+          {
+            "phase": "Planning",
+            "thought": "Decomposing claim 'cm vijay to arrive in coimbatore on 16th August' into subject entities, predicate role assertions, epidemiological/scientific domain, and jurisdictional scope for targeted tool execution."
+          },
+          {
+            "phase": "Tool Execution: Medical/Scientific Fact Checker",
+            "thought": "Biomedical fact check: No specific epidemiological contradiction catalogued."
+          },
+          {
+            "phase": "Tool Execution: Cross-Domain Auditor",
+            "thought": "Domain jurisdictional check passed without authority mismatch."
+          },
+          {
+            "phase": "Tool Execution: Entity Fact Lookup",
+            "thought": "Knowledge base lookup retrieved profiles for 0 key entities."
+          },
+          {
+            "phase": "Tool Execution: Stance Entailment",
+            "thought": "Evidence stance analyzed: 2 supporting vs 0 refuting articles."
+          },
+          {
+            "phase": "Reflection & Decision",
+            "thought": "Evidence and knowledge verification confirmed: Multi-source news evidence consistently corroborates the claim entities and event actions without contradiction. Verified as REAL."
+          }
+        ],
+        "tool_results": {
+          "medical_scientific_fact_checker": {
+            "tool": "medical_scientific_fact_checker",
+            "scientific_fact_check_active": false,
+            "scientific_verdict": "INCONCLUSIVE",
+            "medical_consensus": "No specialized medical contradiction catalogued.",
+            "authority": "Standard Medical Reference"
+          },
+          "authority_attribution_checker": {
+            "tool": "authority_attribution_checker",
+            "vague_authority_detected": false,
+            "flagged_phrase": null,
+            "audit_note": "No anomalous generic authority attribution patterns detected."
+          },
+          "cross_domain_auditor": {
+            "tool": "cross_domain_auditor",
+            "domain_mismatch_detected": false,
+            "severity": "NORMAL",
+            "reasoning": "Claim entities and topical domains appear structurally aligned."
+          },
+          "entity_fact_lookup": {
+            "tool": "entity_fact_lookup",
+            "entities_found": [],
+            "role_contradiction_detected": false,
+            "contradiction_details": "",
+            "role_verified": false,
+            "verification_details": "",
+            "is_supported_detected": false,
+            "support_reason": "",
+            "is_contradiction_detected": false,
+            "contradiction_reason": "",
+            "processed_articles": [
+              {
+                "title": "Wikipedia Entry: Tamil Nadu",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=29918",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Encyclopedic factual reference for 'Tamil Nadu': started to establish trade centres from the 16th century along the eastern coast. The Portuguese arrived in 1522 and built a port named S\u00e3o Tom\u00e9 near",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.64,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0372,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "Wikipedia Entry: Christianity in Tamil Nadu",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=26260439",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Encyclopedic factual reference for 'Christianity in Tamil Nadu': the Church of South India with eight dioceses in Tamil Nadu. They are Coimbatore Diocese, Kanyakumari Diocese, Madras Diocese, Madurai-Ramnad Diocese,",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.52,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0236,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "Wikipedia Entry: 2008 Mumbai attacks",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=20413485",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Encyclopedic factual reference for '2008 Mumbai attacks': quits as Maharashtra CM&quot;. India Today. Archived from the original on 22 August 2019. Retrieved 31 December 2010. &quot;Maharashtra Deputy CM RR Patil resigns&quot;",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.52,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0652,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+                "domain": "thehindu.com",
+                "url": "https://www.thehindu.com/news/national/tamil-nadu/",
+                "publish_date": "2026-08-01",
+                "source": "The Hindu",
+                "content": "Chief Minister of Tamil Nadu Vijay conducted extensive public outreach meetings across Tamil Nadu districts to review welfare scheme implementation.",
+                "retrieval_method": "Google News RSS API",
+                "rank_score": 0.52,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0284,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+                "domain": "timesofindia.indiatimes.com",
+                "url": "https://timesofindia.indiatimes.com/city/chennai/",
+                "publish_date": "2026-08-05",
+                "source": "Times of India",
+                "content": "Chief Minister Vijay's government approved the withdrawal of cases filed against protesting farmers and government teachers, fulfilling a key TVK election promise.",
+                "retrieval_method": "Google News RSS API",
+                "rank_score": 0.52,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0869,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "Wikipedia Entry: Vijay (Chief Minister of Tamil Nadu since June 2026)",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/wiki/Vijay_(actor)",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Joseph Vijay became the Chief Minister of Tamil Nadu on June 5, 2026, after leading TVK to victory in the state assembly elections.",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.52,
+                "relevance_score": 0.15,
+                "claim_similarity": 0.0333,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Date Mismatch / Past Archive"
+              },
+              {
+                "title": "Wikipedia Entry: Terrorism in India",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=1916193",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Encyclopedic factual reference for 'Terrorism in India': Times (28 November 2008) Singh, Vijay (14 March 2003). &quot;Blast in Mumbai train, 10 killed&quot;. Rediff. Retrieved 1 August 2025. Rashid, Atikh (15 April 2013)",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.64,
+                "relevance_score": 0.05,
+                "claim_similarity": 0.0378,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Outdated Past Event (Invalid for Target Date)"
+              },
+              {
+                "title": "Wikipedia Entry: K. Annamalai (BJP politician)",
+                "domain": "en.wikipedia.org",
+                "url": "https://en.wikipedia.org/?curid=81817292",
+                "publish_date": "Verified Reference",
+                "source": "Wikipedia Knowledge Base",
+                "content": "Encyclopedic factual reference for 'K. Annamalai (BJP politician)': Assembly election from Aravakurichi and 2024 Lok Sabha election from Coimbatore. He formally resigned from BJP on 5 June 2026. Annamalai was born as Siva",
+                "retrieval_method": "Wikipedia Search API",
+                "rank_score": 0.52,
+                "relevance_score": 0.05,
+                "claim_similarity": 0.0232,
+                "entity_role_status": "General Evidence",
+                "date_match_status": "Outdated Past Event (Invalid for Target Date)"
+              }
+            ],
+            "summary": "Identified 0 entities. Live-evidence-first approach used for all political office checks."
+          },
+          "temporal_recency_checker": {
+            "tool": "temporal_recency_checker",
+            "temporal_conflict_detected": false,
+            "conflict_type": "CONSISTENT",
+            "details": "No temporal tense conflicts detected between claim and recent evidence."
+          },
+          "claim_decomposition_auditor": {
+            "tool": "claim_decomposition_auditor",
+            "is_composite_policy_claim": false,
+            "decomposed_components": [],
+            "entailment_audit": "Standard factual claim structure without complex multi-part policy thresholds."
+          },
+          "stance_entailment_analyzer": {
+            "tool": "stance_entailment_analyzer",
+            "supporting_articles": 2,
+            "refuting_articles": 0,
+            "neutral_articles": 6,
+            "overall_stance": "SUPPORTS",
+            "entailment_confidence": 0.25
+          }
+        },
+        "explainable_report": {
+          "verdict_badge": "\ud83d\udfe2 VERIFIED REAL",
+          "confidence_percent": 86.0,
+          "executive_summary": "Autonomous verification concluded that the claim is Real with 86.0% agent confidence.",
+          "findings_list": [
+            "\ud83d\udcca **Evidence Stance Breakdown**: 2 supporting, 0 refuting, 6 neutral articles analyzed."
+          ],
+          "report_markdown": "### TRUTHCHAIN AI AGENTIC VERIFICATION REPORT\n\n**Claim Under Investigation:** *\"cm vijay to arrive in coimbatore on 16th August\"*  \n**Autonomous Agent Verdict:** **\ud83d\udfe2 VERIFIED REAL** (Confidence: **86.0%**)\n\n---\n\n#### 1. Core Investigation Findings\n- \ud83d\udcca **Evidence Stance Breakdown**: 2 supporting, 0 refuting, 6 neutral articles analyzed.\n\n#### 2. Autonomous Agent Reasoning Trace\n- **Step 1 [Planning]:** Decomposing claim 'cm vijay to arrive in coimbatore on 16th August' into subject entities, predicate role assertions, epidemiological/scientific domain, and jurisdictional scope for targeted tool execution.\n- **Step 2 [Tool Execution: Medical/Scientific Fact Checker]:** Biomedical fact check: No specific epidemiological contradiction catalogued.\n- **Step 3 [Tool Execution: Cross-Domain Auditor]:** Domain jurisdictional check passed without authority mismatch.\n- **Step 4 [Tool Execution: Entity Fact Lookup]:** Knowledge base lookup retrieved profiles for 0 key entities.\n- **Step 5 [Tool Execution: Stance Entailment]:** Evidence stance analyzed: 2 supporting vs 0 refuting articles.\n- **Step 6 [Reflection & Decision]:** Evidence and knowledge verification confirmed: Multi-source news evidence consistently corroborates the claim entities and event actions without contradiction. Verified as REAL.\n\n#### 3. Final Analytical Rationale\nBased on multi-tool autonomous cross-examination of live news wire archives and institutional knowledge bases, this claim is categorized as **REAL**."
+        }
+      },
+      "module5_credibility": {
+        "module_name": "Module 5: Source Credibility Assessment",
+        "source_credibility_score": 0.9036,
+        "total_sources_evaluated": 8,
+        "tier_counts": {
+          "Tier 1": 6,
+          "Tier 2": 2,
+          "Tier 3": 0,
+          "Tier 4": 0
+        },
+        "tier_percentages": {
+          "tier1_pct": 75.0,
+          "tier2_pct": 25.0,
+          "tier3_pct": 0.0,
+          "tier4_pct": 0.0
+        },
+        "evaluated_sources": [
+          {
+            "title": "Wikipedia Entry: Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/?curid=29918",
+            "relevance": 0.15,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          },
+          {
+            "title": "Wikipedia Entry: Christianity in Tamil Nadu",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/?curid=26260439",
+            "relevance": 0.15,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          },
+          {
+            "title": "Wikipedia Entry: 2008 Mumbai attacks",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/?curid=20413485",
+            "relevance": 0.15,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          },
+          {
+            "title": "Chief Minister Vijay holds public outreach programme across Tamil Nadu districts - The Hindu",
+            "domain": "thehindu.com",
+            "publisher_name": "The Hindu",
+            "tier": "Tier 2: Mainstream Credible",
+            "credibility_score": 0.88,
+            "factuality": "HIGH",
+            "bias": "LEFT-CENTER",
+            "url": "https://www.thehindu.com/news/national/tamil-nadu/",
+            "relevance": 0.15,
+            "description": "Prestigious Indian English-language national daily with strong regional coverage."
+          },
+          {
+            "title": "CM Vijay approves withdrawal of cases against farmers and teachers - Times of India",
+            "domain": "timesofindia.indiatimes.com",
+            "publisher_name": "The Times of India",
+            "tier": "Tier 2: Mainstream Credible",
+            "credibility_score": 0.84,
+            "factuality": "MOSTLY FACTUAL",
+            "bias": "CENTER",
+            "url": "https://timesofindia.indiatimes.com/city/chennai/",
+            "relevance": 0.15,
+            "description": "Largest circulating Indian English daily with widespread nationwide reporting bureaus."
+          },
+          {
+            "title": "Wikipedia Entry: Vijay (Chief Minister of Tamil Nadu since June 2026)",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/wiki/Vijay_(actor)",
+            "relevance": 0.15,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          },
+          {
+            "title": "Wikipedia Entry: Terrorism in India",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/?curid=1916193",
+            "relevance": 0.05,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          },
+          {
+            "title": "Wikipedia Entry: K. Annamalai (BJP politician)",
+            "domain": "en.wikipedia.org",
+            "publisher_name": "Wikipedia Knowledge Base",
+            "tier": "Tier 1: Highly Authoritative",
+            "credibility_score": 0.92,
+            "factuality": "HIGH",
+            "bias": "NEUTRAL REFERENCE",
+            "url": "https://en.wikipedia.org/?curid=81817292",
+            "relevance": 0.05,
+            "description": "Peer-moderated online encyclopedia with cited citations and edit history tracking."
+          }
+        ]
+      },
+      "module6_fusion": {
+        "module_name": "Module 6: Trust Score Fusion",
+        "final_trust_score": 24.0,
+        "final_verdict": "Fake",
+        "verdict_rationale": "Contradiction Safety Gate triggered: Fake Rain Holiday Hoax: 0 official news reports confirm holiday for target date (16 August 2026)",
+        "is_contradiction_active": true,
+        "formula_breakdown": {
+          "formula_latex": "\\text{Trust Score} = (0.15 \\cdot C_1) + (0.30 \\cdot C_2) + (0.15 \\cdot C_3) + (0.25 \\cdot C_4) + (0.15 \\cdot C_5)",
+          "terms": [
+            {
+              "module": "Module 1: Content Style",
+              "symbol": "C_1",
+              "weight": 0.15,
+              "confidence": 0.6312,
+              "weighted_value": 0.0947
+            },
+            {
+              "module": "Module 2: Evidence Support",
+              "symbol": "C_2",
+              "weight": 0.3,
+              "confidence": 0.05,
+              "weighted_value": 0.015
+            },
+            {
+              "module": "Module 3: Source Independence",
+              "symbol": "C_3",
+              "weight": 0.15,
+              "confidence": 0.375,
+              "weighted_value": 0.0562
+            },
+            {
+              "module": "Module 4: Agentic Verification",
+              "symbol": "C_4",
+              "weight": 0.25,
+              "confidence": 0.86,
+              "weighted_value": 0.215
+            },
+            {
+              "module": "Module 5: Source Credibility",
+              "symbol": "C_5",
+              "weight": 0.15,
+              "confidence": 0.9036,
+              "weighted_value": 0.1355
+            }
+          ],
+          "linear_weighted_sum": 51.65,
+          "logistic_logit_z": 1.32,
+          "logistic_calibrated_probability_pct": 78.91,
+          "final_fused_score_pct": 24.0
+        },
+        "module_inputs": {
+          "C1_content": 0.6312,
+          "C2_evidence": 0.05,
+          "C3_independence": 0.375,
+          "C4_agentic": 0.86,
+          "C5_credibility": 0.9036
+        }
+      },
+      "pipeline_version": "2.0.0"
+    },
+    "previous_hash": "0005fae7c3cd7462432141a3582221c0cdd3ea89aa043afe3f10ffa2e63e1418",
+    "nonce": 23,
+    "hash": "007b72efd823bf44cc73955873e6d5101eceaadd2ead88058d9079153b60d107"
+  }
+]

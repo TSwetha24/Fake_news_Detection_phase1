@@ -335,7 +335,7 @@ def analyze_entity_role_relations(claim_text: str, evidence_articles: list):
             art_copy['entity_role_status'] = article_status
             processed_articles.append(art_copy)
 
-    return {
+    res = {
         "is_contradiction_detected": is_contradiction,
         "contradiction_reason": contradiction_reason,
         "is_supported_detected": is_supported,
@@ -344,14 +344,7 @@ def analyze_entity_role_relations(claim_text: str, evidence_articles: list):
         "contradicting_articles_count": contradicting_count,
         "processed_articles": processed_articles
     }
+    from src.patches import patch_analyze_extended_roles
+    return patch_analyze_extended_roles(claim_text, evidence_articles, res)
 
-    return {
-        "is_contradiction_detected": is_contradiction,
-        "contradiction_reason": contradiction_reason,
-        "is_supported_detected": is_supported,
-        "support_reason": support_reason,
-        "supporting_articles_count": supporting_count,
-        "contradicting_articles_count": contradicting_count,
-        "processed_articles": processed_articles
-    }
 

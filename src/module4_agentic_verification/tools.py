@@ -1,5 +1,6 @@
 import re
 from typing import Dict, Any, List
+import config
 
 class MedicalScientificFactTool:
     """Tool for checking biomedical facts, viral etiology, and health/dietary misinformation."""
@@ -288,19 +289,21 @@ class EntityFactLookupTool:
                     })
 
                 else:
-                    # Live evidence is inconclusive — check if they are a clearly non-political person
-                    clearly_non_political = claimed_person in ["suriya", "dhanush"]
-                    if clearly_non_political:
-                        role_contradiction_detected = True
-                        contradiction_details = f"{claimed_person.title()} is a film actor with no known government role."
+                    # Live evidence is inconclusive — check if tool evidence grounding patch is enabled
+                    import config
+                    if not getattr(config, "ENABLE_TOOL_EVIDENCE_GROUNDING_PATCH", True):
+                        clearly_non_political = claimed_person in ["suriya", "dhanush"]
+                        if clearly_non_political:
+                            role_contradiction_detected = True
+                            contradiction_details = f"{claimed_person.title()} is a film actor with no known government role."
                     else:
-                        # Cannot determine from evidence — mark as unverified
-                        verification_details = f"Could not confirm or deny via live evidence whether {claimed_person.title()} is current CM of Tamil Nadu. Marking as unverified."
+                        # Strictly answer from retrieved evidence — no LLM memory fallback
+                        verification_details = f"Retrieved live evidence does not corroborate that {claimed_person.title()} holds the claimed office. Marking as unverified."
                         findings.append({
                             "entity": claimed_person.title(),
-                            "known_role": "Role unclear from available evidence",
-                            "status": "Unverified — insufficient live evidence",
-                            "authority_scope": "Tamil Nadu"
+                            "known_role": "Role uncorroborated in retrieved live evidence",
+                            "status": "Unverified — insufficient evidence citations",
+                            "authority_scope": "State Government"
                         })
 
         elif is_cm_claim and any(k in claim_lower for k in kerala_keywords):
@@ -679,7 +682,21 @@ class StanceEntailmentTool:
         has_specific_constraint = any(w in claim_lower for w in ["2000", "2,000", "threshold", "otp", "mandate", "limit"])
 
         for art in evidence_articles:
+            from src.patches import patch_evaluate_article_stance
+            p_stance = patch_evaluate_article_stance(claim, art, content_keywords)
+            art['stance'] = p_stance
+            if p_stance == "CONTRADICTS":
+                refuting += 1
+                continue
+            elif p_stance == "SUPPORTS":
+                supporting += 1
+                continue
+            elif p_stance == "NEUTRAL" and getattr(config, "ENABLE_EXTENDED_ROLE_VERIFICATION_PATCH", True):
+                neutral += 1
+                continue
+
             title_lower = art.get('title', '').lower()
+
             content_lower = art.get('content', '').lower()
             text = f"{title_lower} {content_lower}"
             status = art.get("entity_role_status", "")

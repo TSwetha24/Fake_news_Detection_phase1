@@ -22,10 +22,15 @@ class DuckDuckGoNewsRetriever:
         not the query string repeated as a fake title.
         """
         encoded = urllib.parse.quote(query)
-        url = f"https://html.duckduckgo.com/html/?q={encoded}"
+        import config
+        df_param = "&df=w" if getattr(config, "ENABLE_RECENCY_RETRIEVAL_PATCH", True) else ""
+        url = f"https://html.duckduckgo.com/html/?q={encoded}{df_param}"
 
         try:
-            resp = requests.get(url, headers=self.headers, verify=False, timeout=2.5)
+            resp = requests.get(url, headers=self.headers, verify=False, timeout=3.5)
+            import os
+            if os.getenv("DEBUG_TRACE"):
+                print(f"[DEBUG_TRACE] DuckDuckGo HTTP: {resp.status_code}")
             if resp.status_code == 200:
                 html = resp.text
 
